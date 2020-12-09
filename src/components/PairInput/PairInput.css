@@ -1,8 +1,8 @@
 .pair-input {
   background-color: transparent;
   height: 2.5em;
-  width: 100%;
   border: 0;
+  width: 25%;
   color: white;
 }
 
@@ -12,7 +12,13 @@
 .input-container {
   display: flex;
   width: 50%;
-  height: 2.6em;
   border: 0.5px solid snow;
   background-color: transparent;
+  flex-wrap: wrap;
+}
+
+.input-tag {
+  margin: "4px";
+  display: flex;
+  align-items: "center";
 }

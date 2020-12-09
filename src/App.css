@@ -40,6 +40,36 @@
   color: white;
 }
 
+/* .pair-card-container {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  width: 60%;
+  justify-content: space-evenly;
+  padding-top: 20px;
+} */
+
+.pair-card-container {
+  padding-top: 20px;
+  display: grid;
+  align-self: center;
+  grid-template-columns: 200px 200px 200px 200px;
+  column-gap: 10px;
+  row-gap: 10px;
+}
+
+@media (max-width: 800px) {
+  .pair-card-container {
+    grid-template-columns: repeat(2, 200px);
+  }
+}
+
+@media (max-width: 300px) {
+  .pair-card-container {
+    grid-template-columns: repeat(1, 200px);
+  }
+}
+
 .App-link {
   color: #61dafb;
 }
