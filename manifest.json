@@ -1,6 +1,7 @@
 {
   "short_name": "React App",
   "name": "Create React App Sample",
+  "homepage": "https://christian0411.github.io/pair-gen",
   "icons": [
   ],
   "start_url": ".",
