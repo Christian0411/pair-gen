@@ -14,6 +14,7 @@ const Key = {
   BACKSPACE: 8,
   LEFT_ARROW: 37,
   ENTER: 13,
+  TAB: 9,
 };
 
 function PairInput({ names, onNewName, onEnter }: PairInputProps) {
@@ -33,7 +34,7 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
 
   const handleInput = (e: any) => {
     e.which = e.which || e.keyCode;
-    if (e.which === Key.SPACE) {
+    if (e.which === Key.SPACE || e.which === Key.TAB) {
       if (e.target.value.trim(" ") !== "") {
         e.preventDefault();
         addTag(e.target.value);
@@ -61,10 +62,19 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pasted = e.clipboardData.getData("Text");
-    const pastedTags = pasted
+    let pastedTags;
+
+    const pastedTagsNewline = pasted
       .replace(/\r/g, "")
       .split(/\n/)
       .filter((item) => item !== "");
+
+    if (pastedTagsNewline.length === 1) {
+      pastedTags = pasted.split(" ").filter((item) => item !== "");
+    } else {
+      pastedTags = pastedTagsNewline;
+    }
+
     setTags([...tags, ...pastedTags]);
     setNameInput("");
     e.preventDefault();
@@ -107,6 +117,9 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
           className="pair-input"
           ref={nameInputRef}
           autoFocus
+          placeholder={(() => {
+            return tags.length ? "" : "Enter names. Ex. chris robert oscar";
+          })()}
           onChange={(e) => setNameInput(String(e.target.value))}
           onPaste={handlePaste}
           onKeyDown={handleInput}

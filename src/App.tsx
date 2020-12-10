@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Row, Col, Slider } from "antd";
 import "./App.css";
 import PairInput from "./components/PairInput/PairInput";
 import PairCard from "./components/PairCard/PairCard";
@@ -45,24 +45,39 @@ function App() {
 
   return (
     <div className="App">
-      <div className="title-container">
-        <img height="200" width="200" src={logo} />
-      </div>
-      <div className="pair-input-container">
-        <PairInput names={names} onNewName={setNames} onEnter={generatePairs} />
-      </div>
-      <div className={"pair-card-container"}>
-        {pairs.map((pair, index) => (
-          <PairCard pair={pair} pairIndex={index} />
-        ))}
-        <Button
-          onClick={() => {
-            navigator.clipboard.writeText(StringifyArray(pairs));
-          }}
-        >
-          Copy
-        </Button>
-      </div>
+      <Col>
+        <Row align="middle" justify="center" gutter={[8, 8]}>
+          <Col>
+            <img height="100" width="100" src={logo} />
+          </Col>
+          <Col>
+            <span className="title-text">Pair Gen</span>
+          </Col>
+        </Row>
+        <Row align="middle" justify="center" gutter={[8, 8]}>
+          <PairInput
+            names={names}
+            onNewName={setNames}
+            onEnter={generatePairs}
+          />
+          {pairs.length > 0 && (
+            <Button
+              onClick={() => {
+                navigator.clipboard.writeText(StringifyArray(pairs));
+              }}
+            >
+              Copy
+            </Button>
+          )}
+        </Row>
+        <Row align="middle" justify="center" gutter={[8, 8]}>
+          <div className={"pair-card-container"}>
+            {pairs.map((pair, index) => (
+              <PairCard pair={pair} pairIndex={index} />
+            ))}
+          </div>
+        </Row>
+      </Col>
     </div>
   );
 }
