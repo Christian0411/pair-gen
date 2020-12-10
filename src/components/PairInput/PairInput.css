@@ -2,8 +2,11 @@
   background-color: transparent;
   height: 2.5em;
   border: 0;
-  width: 25%;
   color: white;
+  flex-basis: 30px;
+  min-width: 30px;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 
 .pair-input:focus {

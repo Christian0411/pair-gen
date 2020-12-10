@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, Tag } from "antd";
 import "./PairCard.css";
 

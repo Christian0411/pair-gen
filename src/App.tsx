@@ -1,10 +1,10 @@
-import React, { Component, useState } from "react";
-import logo from "./logo.svg";
+import React, { useState } from "react";
 
 import "./App.css";
 import PairInput from "./components/PairInput/PairInput";
 import PairCard from "./components/PairCard/PairCard";
 import { Button } from "antd";
+import logo from "./imgs/logo.png";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
@@ -18,9 +18,9 @@ function App() {
   }
 
   const StringifyArray = (array: String[][]): string => {
-    return `Pairs for ${new Date().toDateString}: ${array
-      .map((item) => `(${item.join(", ")})`)
-      .join(" | ")}`;
+    return `Pairs for ${new Date().toDateString()}: ${array
+      .map((item) => `\n(${item.join(", ")})`)
+      .join("")}`;
   };
 
   const generatePairs = (names: string[]) => {
@@ -46,10 +46,15 @@ function App() {
   return (
     <div className="App">
       <div className="title-container">
-        <h1 className="title-text">Pairs</h1>
+        <img height="200" width="200" src={logo} />
       </div>
       <div className="pair-input-container">
         <PairInput names={names} onNewName={setNames} onEnter={generatePairs} />
+      </div>
+      <div className={"pair-card-container"}>
+        {pairs.map((pair, index) => (
+          <PairCard pair={pair} pairIndex={index} />
+        ))}
         <Button
           onClick={() => {
             navigator.clipboard.writeText(StringifyArray(pairs));
@@ -57,11 +62,6 @@ function App() {
         >
           Copy
         </Button>
-      </div>
-      <div className={"pair-card-container"}>
-        {pairs.map((pair, index) => (
-          <PairCard pair={pair} pairIndex={index} />
-        ))}
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import { Tag } from "antd";
-import { Button, message, Input } from "antd";
-import React, { Component, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import "./PairInput.css";
 
@@ -30,11 +29,11 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
 
   useEffect(() => {
     onNewName(names);
-  }, [tags]);
+  }, [tags, names, onNewName]);
 
   const handleInput = (e: any) => {
     e.which = e.which || e.keyCode;
-    if (e.which == Key.SPACE) {
+    if (e.which === Key.SPACE) {
       if (e.target.value.trim(" ") !== "") {
         e.preventDefault();
         addTag(e.target.value);
@@ -43,7 +42,7 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
       if (e.target.value === "") {
         popTag();
       }
-    } else if (e.which == Key.LEFT_ARROW) {
+    } else if (e.which === Key.LEFT_ARROW) {
       if (e.target.value === "") {
         e.preventDefault();
         const item = popTag();
@@ -58,6 +57,17 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
         onEnter(tags);
       }
     }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasted = e.clipboardData.getData("Text");
+    const pastedTags = pasted
+      .replace(/\r/g, "")
+      .split(/\n/)
+      .filter((item) => item !== "");
+    setTags([...tags, ...pastedTags]);
+    setNameInput("");
+    e.preventDefault();
   };
 
   const addTag = (tag: string) => {
@@ -98,6 +108,7 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
           ref={nameInputRef}
           autoFocus
           onChange={(e) => setNameInput(String(e.target.value))}
+          onPaste={handlePaste}
           onKeyDown={handleInput}
           value={nameInput}
         />
