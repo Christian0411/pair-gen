@@ -98,7 +98,7 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
               e.preventDefault();
               deleteTag(item);
             }}
-            color="#63b89e"
+            color="#56ca8d"
           >
             {item}
           </Tag>

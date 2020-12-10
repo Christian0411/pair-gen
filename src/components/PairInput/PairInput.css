@@ -2,7 +2,7 @@
   background-color: transparent;
   height: 2.5em;
   border: 0;
-  color: white;
+  color: snow;
   flex-basis: 30px;
   min-width: 30px;
   flex-grow: 1;
@@ -15,7 +15,7 @@
 .input-container {
   display: flex;
   width: 50%;
-  border: 0.5px solid snow;
+  border: 0.5px solid #828290;
   background-color: transparent;
   flex-wrap: wrap;
 }

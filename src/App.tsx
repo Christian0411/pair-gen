@@ -50,18 +50,29 @@ function App() {
       </div>
       <div className="pair-input-container">
         <PairInput names={names} onNewName={setNames} onEnter={generatePairs} />
+        {
+          pairs.length > 0 &&
+          <div>
+            <Button
+              className="copy-button"
+              onClick={() => {
+                navigator.clipboard.writeText(StringifyArray(pairs));
+              }}
+            >
+              Copy
+            </Button>
+            <Button
+              className="reroll-button"
+            >
+              Reroll
+            </Button>
+          </div>
+        }
       </div>
       <div className={"pair-card-container"}>
         {pairs.map((pair, index) => (
           <PairCard pair={pair} pairIndex={index} />
         ))}
-        <Button
-          onClick={() => {
-            navigator.clipboard.writeText(StringifyArray(pairs));
-          }}
-        >
-          Copy
-        </Button>
       </div>
     </div>
   );

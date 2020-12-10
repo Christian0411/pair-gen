@@ -13,7 +13,7 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
     <Card title={`Pair ${pairIndex}`} bordered={false}>
       <div className={"tag-container"}>
         {pair.map((person) => (
-          <Tag color="#63b89e">{person}</Tag>
+          <Tag color="#56ca8d">{person}</Tag>
         ))}
       </div>
     </Card>
