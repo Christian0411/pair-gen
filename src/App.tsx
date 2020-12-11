@@ -4,6 +4,7 @@ import "./App.css";
 import PairInput from "./components/PairInput/PairInput";
 import PairCard from "./components/PairCard/PairCard";
 import { Button } from "antd";
+import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
 
 function App() {
@@ -44,41 +45,44 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Col>
-        <Row align="middle" justify="center" gutter={[8, 8]}>
-          <Col>
-            <img height="100" width="100" src={logo} />
-          </Col>
-          <Col>
-            <span className="title-text">Pair Gen</span>
-          </Col>
-        </Row>
-        <Row align="middle" justify="center" gutter={[8, 8]}>
-          <PairInput
-            names={names}
-            onNewName={setNames}
-            onEnter={generatePairs}
-          />
-          {pairs.length > 0 && (
-            <Button
-              onClick={() => {
-                navigator.clipboard.writeText(StringifyArray(pairs));
-              }}
-            >
-              Copy
-            </Button>
-          )}
-        </Row>
-        <Row align="middle" justify="center" gutter={[8, 8]}>
-          <div className={"pair-card-container"}>
-            {pairs.map((pair, index) => (
-              <PairCard pair={pair} pairIndex={index} />
-            ))}
-          </div>
-        </Row>
-      </Col>
-    </div>
+    <>
+      <div className="App">
+        <Col>
+          <Row align="middle" justify="center" gutter={[8, 36]}>
+            <Col>
+              <img height="100" width="100" src={logo} />
+            </Col>
+            <Col>
+              <span className="title-text">Pair Gen</span>
+            </Col>
+          </Row>
+          <Row align="middle" justify="center" gutter={[8, 8]}>
+            <PairInput
+              names={names}
+              onNewName={setNames}
+              onEnter={generatePairs}
+            />
+            {pairs.length > 0 && (
+              <Button
+                onClick={() => {
+                  navigator.clipboard.writeText(StringifyArray(pairs));
+                }}
+              >
+                Copy
+              </Button>
+            )}
+          </Row>
+          <Row align="middle" justify="center" gutter={[8, 8]}>
+            <div className={"pair-card-container"}>
+              {pairs.map((pair, index) => (
+                <PairCard pair={pair} pairIndex={index} />
+              ))}
+            </div>
+          </Row>
+        </Col>
+      </div>
+      <ParticlesBg color="#63b89e" num={40} type="cobweb" bg={true} />
+    </>
   );
 }
 

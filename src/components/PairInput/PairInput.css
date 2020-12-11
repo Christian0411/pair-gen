@@ -14,9 +14,10 @@
 }
 .input-container {
   display: flex;
-  width: 50%;
+  width: 30%;
   border: 0.5px solid snow;
   background-color: transparent;
+  min-width: 500px;
   flex-wrap: wrap;
 }
 
