@@ -107,7 +107,7 @@ function App() {
           </Row>
         </Col>
       </div>
-      <ParticlesBg color="#63b89e" num={40} type="cobweb" bg={true} />
+      <ParticlesBg color="#56ca8d" num={40} type="cobweb" bg={true} />
     </>
   );
 }
