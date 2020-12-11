@@ -6,9 +6,13 @@ import PairCard from "./components/PairCard/PairCard";
 import { Button } from "antd";
 import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
+import dice from "./imgs/dice.svg";
+import Icon from "@ant-design/icons";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
+
+  const [wobble, setWobble] = useState<number>();
 
   const [pairs, setPairs] = useState<string[][]>([]);
 
@@ -25,6 +29,7 @@ function App() {
   };
 
   const generatePairs = (names: string[]) => {
+    setWobble(1);
     setNames([]);
     let temp = names;
     let tempPairs: string[][] = [];
@@ -62,16 +67,37 @@ function App() {
               onNewName={setNames}
               onEnter={generatePairs}
             />
-            {pairs.length > 0 && (
+            <Col>
               <Button
                 onClick={() => {
-                  navigator.clipboard.writeText(StringifyArray(pairs));
+                  generatePairs(pairs.flat());
                 }}
+                ghost
+                style={{ border: 0 }}
+                shape={"round"}
               >
-                Copy
+                <img
+                  width="30px"
+                  height="30px"
+                  src={dice}
+                  className={"center image"}
+                  onClick={() => setWobble(1)}
+                  onAnimationEnd={() => setWobble(0)}
+                  data-wobble={wobble}
+                />
               </Button>
-            )}
+            </Col>
           </Row>
+
+          {/* {pairs.length > 0 && (
+            <Button
+              onClick={() => {
+                navigator.clipboard.writeText(StringifyArray(pairs));
+              }}
+            >
+              Copy
+            </Button>
+          )} */}
           <Row align="middle" justify="center" gutter={[8, 8]}>
             <div className={"pair-card-container"}>
               {pairs.map((pair, index) => (

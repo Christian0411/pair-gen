@@ -72,3 +72,22 @@
     transform: rotate(360deg);
   }
 }
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image {
+  display: block;
+  margin: 0 auto;
+}
+.image[data-wobble="1"] {
+  animation: data-wobble 1s 1;
+}
+
+@keyframes data-wobble {
+  100% {
+    transform: rotate(360deg);
+  }
+}
