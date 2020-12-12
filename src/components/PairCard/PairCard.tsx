@@ -9,7 +9,6 @@ interface PairCardProps {
 }
 
 function PairCard({ pair, pairIndex }: PairCardProps) {
-  console.log(pair);
   return (
     <Card
       className={"card"}

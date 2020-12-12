@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Slider } from "antd";
 import "./App.css";
 import PairInput from "./components/PairInput/PairInput";
@@ -18,6 +18,9 @@ function App() {
 
   const [hover, setHover] = useState<boolean>();
 
+  const windowUrl = window.location.search;
+  const params = new URLSearchParams(windowUrl);
+
   function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -27,7 +30,7 @@ function App() {
   const StringifyArray = (array: String[][]): string => {
     return `Pairs for ${new Date().toDateString()}: ${array
       .map((item) => `\n(${item.join(", ")})`)
-      .join("")}`;
+      .join("")}\nGenerated using ${window.location.href}`;
   };
 
   const generatePairs = (names: string[]) => {
@@ -50,6 +53,26 @@ function App() {
     setPairs(tempPairs);
   };
 
+  const createRequestUri = (names: string[]) => {
+    names.length > 0
+      ? window.history.replaceState(null, "", `?names=${names.join()}`)
+      : window.history.replaceState(null, "", "/");
+  };
+
+  useEffect(() => {
+    const namesFromUrl = params.get("names");
+    if (namesFromUrl) {
+      console.log(namesFromUrl);
+      const namesFromUrlArray = namesFromUrl
+        .split(",")
+        .filter((item) => item !== "")
+        .map((item) => decodeURIComponent(item).trim());
+      console.log(namesFromUrlArray);
+      setNames(namesFromUrlArray);
+      generatePairs(namesFromUrlArray);
+    }
+  }, []);
+
   return (
     <>
       <div className="App">
@@ -68,12 +91,16 @@ function App() {
               onNewName={(names) => {
                 setNames(names);
               }}
-              onEnter={generatePairs}
+              onEnter={(names) => {
+                createRequestUri(names);
+                generatePairs(names);
+              }}
             />
             <Col>
               <RollButton
                 doAnimation={doRollAnimation}
                 onClick={() => {
+                  createRequestUri(names);
                   generatePairs(names);
                 }}
                 onRollAnimationEnd={() => {

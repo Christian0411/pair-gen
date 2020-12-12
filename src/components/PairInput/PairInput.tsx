@@ -25,7 +25,9 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setTags(names);
+    if (JSON.stringify(tags) !== JSON.stringify(names)) {
+      setTags(names);
+    }
   }, [names]);
 
   useEffect(() => {
