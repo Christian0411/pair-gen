@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Tag } from "antd";
 import "./PairCard.css";
+import Draggable from "react-draggable";
 
 interface PairCardProps {
   pair: string[];
@@ -10,10 +11,17 @@ interface PairCardProps {
 function PairCard({ pair, pairIndex }: PairCardProps) {
   console.log(pair);
   return (
-    <Card title={`Pair ${pairIndex}`} bordered={false}>
+    <Card
+      className={"card"}
+      title={`Pair ${pairIndex}`}
+      bordered={false}
+      data-visible={1}
+    >
       <div className={"tag-container"}>
         {pair.map((person) => (
-          <Tag color="#56ca8d">{person}</Tag>
+          <Draggable>
+            <Tag color="#56ca8d">{person}</Tag>
+          </Draggable>
         ))}
       </div>
     </Card>

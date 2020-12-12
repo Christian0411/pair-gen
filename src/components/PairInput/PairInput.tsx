@@ -29,8 +29,10 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
   }, [names]);
 
   useEffect(() => {
-    onNewName(names);
-  }, [tags, names, onNewName]);
+    if (JSON.stringify(tags) !== JSON.stringify(names)) {
+      onNewName(tags);
+    }
+  }, [tags]);
 
   const handleInput = (e: any) => {
     e.which = e.which || e.keyCode;
@@ -50,8 +52,7 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
         setNameInput(item);
       }
     } else if (e.which === Key.ENTER) {
-      console.log(e.target.value);
-      if (e.target.value !== "") {
+      if (e.target.value.trim(" ") !== "") {
         addTag(e.target.value);
         onEnter([...tags, e.target.value]);
       } else {

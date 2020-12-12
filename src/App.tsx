@@ -6,15 +6,17 @@ import PairCard from "./components/PairCard/PairCard";
 import { Button } from "antd";
 import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
-import dice from "./imgs/dice.svg";
-import Icon from "@ant-design/icons";
+import { CopyOutlined } from "@ant-design/icons";
+import RollButton from "./components/RollButton/RollButton";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
 
-  const [wobble, setWobble] = useState<number>();
-
   const [pairs, setPairs] = useState<string[][]>([]);
+
+  const [doRollAnimation, setDoRollAnimation] = useState<number>(0);
+
+  const [hover, setHover] = useState<boolean>();
 
   function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
@@ -29,8 +31,7 @@ function App() {
   };
 
   const generatePairs = (names: string[]) => {
-    setWobble(1);
-    setNames([]);
+    setDoRollAnimation(1);
     let temp = names;
     let tempPairs: string[][] = [];
     while (temp.length > 0) {
@@ -64,45 +65,53 @@ function App() {
           <Row align="middle" justify="center" gutter={[8, 8]}>
             <PairInput
               names={names}
-              onNewName={setNames}
+              onNewName={(names) => {
+                setNames(names);
+              }}
               onEnter={generatePairs}
             />
             <Col>
-              <Button
+              <RollButton
+                doAnimation={doRollAnimation}
                 onClick={() => {
-                  generatePairs(pairs.flat());
+                  generatePairs(names);
                 }}
-                ghost
-                style={{ border: 0 }}
-                shape={"round"}
-              >
-                <img
-                  width="30px"
-                  height="30px"
-                  src={dice}
-                  className={"center image"}
-                  onClick={() => setWobble(1)}
-                  onAnimationEnd={() => setWobble(0)}
-                  data-wobble={wobble}
-                />
-              </Button>
+                onRollAnimationEnd={() => {
+                  setDoRollAnimation(0);
+                }}
+              />
             </Col>
           </Row>
 
-          {/* {pairs.length > 0 && (
-            <Button
-              onClick={() => {
-                navigator.clipboard.writeText(StringifyArray(pairs));
-              }}
+          <Row align="middle" justify="center" gutter={[16, 1]}>
+            <div
+              className={`pair-card-container ${
+                hover ? "pair-card-container-hover" : ""
+              }`}
             >
-              Copy
-            </Button>
-          )} */}
-          <Row align="middle" justify="center" gutter={[8, 8]}>
-            <div className={"pair-card-container"}>
               {pairs.map((pair, index) => (
                 <PairCard pair={pair} pairIndex={index} />
               ))}
+            </div>
+          </Row>
+          <Row align="middle" justify="center">
+            <div className={"copy-container"}>
+              {pairs.length > 0 && (
+                <Button
+                  onMouseEnter={() => {
+                    setHover(true);
+                  }}
+                  onMouseLeave={() => {
+                    setHover(false);
+                  }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(StringifyArray(pairs));
+                  }}
+                  style={{ background: "transparent", border: 0 }}
+                >
+                  <CopyOutlined className="copy-icon" />
+                </Button>
+              )}
             </div>
           </Row>
         </Col>

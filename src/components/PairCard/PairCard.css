@@ -3,3 +3,16 @@
   justify-content: left;
   flex-direction: column;
 }
+
+.card[data-visible="1"] {
+  animation: data-visible 0.5s 1;
+}
+
+@keyframes data-visible {
+  100% {
+    opacity: 1;
+  }
+  0% {
+    opacity: 0;
+  }
+}
