@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Row, Col, Tooltip } from "antd";
 import "./App.css";
 import PairInput from "./components/PairInput/PairInput";
-import PairCard from "./components/PairCard/PairCard";
 import { Button } from "antd";
 import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
 import { CopyOutlined } from "@ant-design/icons";
 import RollButton from "./components/RollButton/RollButton";
-import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import DndCards from "./components/DndCards/DndCards";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
@@ -73,55 +72,6 @@ function App() {
     }
   }, [generatePairs]);
 
-  /////////////////////////////
-
-  const reorder = (list:any, startIndex:any, endIndex:any) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-  
-    return result;
-  };
-
-  const move = (source:any, destination:any, droppableSource:any, droppableDestination:any) => {
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
-  
-    destClone.splice(droppableDestination.index, 0, removed);
-  
-    const result:any = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-  
-    return result;
-  };
-
-  function onDragEnd(result:any) {
-    const { source, destination } = result;
-
-    // dropped outside the list
-    if (!destination) {
-      return;
-    }
-    const sInd = +source.droppableId;
-    const dInd = +destination.droppableId;
-
-    if (sInd === dInd) {
-      const items = reorder(pairs[sInd], source.index, destination.index);
-      const newPairs:any = [...pairs];
-      newPairs[sInd] = items;
-      setPairs(newPairs);
-    } else {
-      const result = move(pairs[sInd], pairs[dInd], source, destination);
-      const newPairs = [...pairs];
-      newPairs[sInd] = result[sInd];
-      newPairs[dInd] = result[dInd];
-
-      setPairs(newPairs.filter(group => group.length));
-    }
-  }
-
   return (
     <>
       <div className="App">
@@ -165,15 +115,7 @@ function App() {
                 hover ? "pair-card-container-hover" : ""
               }`}
             >
-              <DragDropContext onDragEnd={onDragEnd}>
-                {pairs.map((pair, index) => (
-                  <PairCard
-                    key={index}
-                    pair={pair}
-                    pairIndex={index}
-                  />
-                ))}
-              </DragDropContext>
+              <DndCards pairs={pairs} onPairChange={(newPairs) => setPairs(newPairs)}/>
             </div>
           </Row>
           <Row align="middle" justify="center">
