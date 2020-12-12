@@ -110,15 +110,13 @@ function App() {
           </Row>
 
           <Row align="middle" justify="center" gutter={[16, 1]}>
-            <div
-              className={`pair-card-container ${
-                hover ? "pair-card-container-hover" : ""
-              }`}
-            >
-              {pairs.map((pair, index) => (
-                <PairCard key={index} pair={pair} pairIndex={index} />
-              ))}
-            </div>
+              <div
+                className={`pair-card-container ${hover ? "pair-card-container-hover" : ""}`}
+              >
+                {pairs.map((pair, index) => (
+                      <PairCard key={index} pair={pair} pairIndex={index} />
+                ))}
+              </div>
           </Row>
           <Row align="middle" justify="center">
             <div className={"copy-container"}>

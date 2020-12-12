@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Tag } from "antd";
 import "./PairCard.css";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 interface PairCardProps {
   pair: string[];
@@ -9,20 +9,48 @@ interface PairCardProps {
 }
 
 function PairCard({ pair, pairIndex }: PairCardProps) {
+  /// Drag/Drop Logic ///
+  const reorder = (list: any[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+  
+    return result;
+  };
+
+  const [items, setItems] = useState<string[]>(pair);
+
+  const onDragEnd = (result: DropResult) => {
+    console.log(result)
+    if (!result.destination) {
+      return;
+    }
+  
+    const newItems = reorder(
+      items,
+      result.source.index,
+      result.destination.index
+    );
+  
+    setItems(newItems);
+  }
+  ///////////////////////
+
   return (
-    <DragDropContext onDragEnd={() => {}}>
-      <Droppable droppableId={`${pair}-${pairIndex}`}>
-        {(provided) => (
-          <div key={pairIndex} ref={provided.innerRef}>
-            <Card
-              key={pairIndex}
-              className={"card"}
-              title={`Pair ${pairIndex}`}
-              bordered={false}
-              data-visible={1}
-            >
+    /// Drag/Drop Logic /// 
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Card
+        key={pairIndex}
+        className={"card"}
+        title={`Pair ${pairIndex}`}
+        bordered={false}
+        data-visible={1}
+      >
+        <Droppable droppableId={`${pairIndex}`} direction="horizontal">
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
               <div className={"tag-container"}>
-                {pair.map((person, index) => (
+                {items.map((person, index) => (
                   <Draggable
                     index={index}
                     key={`${person}`}
@@ -31,8 +59,8 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
                     {(provided, snapshot) => (
                       <Tag
                         ref={provided.innerRef}
-                        {...provided.dragHandleProps}
                         {...provided.draggableProps}
+                        {...provided.dragHandleProps}
                         color="#56ca8d"
                       >
                         {person}
@@ -42,11 +70,12 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
                 ))}
               </div>
               {provided.placeholder}
-            </Card>
-          </div>
-        )}
-      </Droppable>
+            </div>
+          )}
+        </Droppable>
+      </Card>
     </DragDropContext>
+    ///////////////////////
   );
 }
 export default PairCard;
