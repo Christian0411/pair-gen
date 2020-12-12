@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 import dice from "../../imgs/dice.svg";
 import "./RollButton.css";
@@ -22,6 +21,7 @@ function RollButton({
   return (
     <img
       width="30px"
+      alt="roll"
       style={{ cursor: "pointer" }}
       height="30px"
       src={dice}

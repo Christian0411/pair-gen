@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Slider } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { Row, Col } from "antd";
 import "./App.css";
 import PairInput from "./components/PairInput/PairInput";
 import PairCard from "./components/PairCard/PairCard";
@@ -18,22 +18,19 @@ function App() {
 
   const [hover, setHover] = useState<boolean>();
 
-  const windowUrl = window.location.search;
-  const params = new URLSearchParams(windowUrl);
-
   function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
-  const StringifyArray = (array: String[][]): string => {
+  const createCopyString = (array: String[][]): string => {
     return `Pairs for ${new Date().toDateString()}: ${array
       .map((item) => `\n(${item.join(", ")})`)
       .join("")}\nGenerated using ${window.location.href}`;
   };
 
-  const generatePairs = (names: string[]) => {
+  const generatePairs = useCallback((names: string[]) => {
     setDoRollAnimation(1);
     let temp = names;
     let tempPairs: string[][] = [];
@@ -51,7 +48,7 @@ function App() {
       tempPairs = [...tempPairs, [name1, name2]];
     }
     setPairs(tempPairs);
-  };
+  }, []);
 
   const createRequestUri = (names: string[]) => {
     names.length > 0
@@ -60,18 +57,18 @@ function App() {
   };
 
   useEffect(() => {
+    const windowUrl = window.location.search;
+    const params = new URLSearchParams(windowUrl);
     const namesFromUrl = params.get("names");
     if (namesFromUrl) {
-      console.log(namesFromUrl);
       const namesFromUrlArray = namesFromUrl
         .split(",")
         .filter((item) => item !== "")
         .map((item) => decodeURIComponent(item).trim());
-      console.log(namesFromUrlArray);
       setNames(namesFromUrlArray);
       generatePairs(namesFromUrlArray);
     }
-  }, []);
+  }, [generatePairs]);
 
   return (
     <>
@@ -79,7 +76,7 @@ function App() {
         <Col>
           <Row align="middle" justify="center" gutter={[8, 36]}>
             <Col>
-              <img height="100" width="100" src={logo} />
+              <img height="100" width="100" alt={"logo"} src={logo} />
             </Col>
             <Col>
               <span className="title-text">Pair Gen</span>
@@ -117,7 +114,7 @@ function App() {
               }`}
             >
               {pairs.map((pair, index) => (
-                <PairCard pair={pair} pairIndex={index} />
+                <PairCard key={index} pair={pair} pairIndex={index} />
               ))}
             </div>
           </Row>
@@ -132,7 +129,7 @@ function App() {
                     setHover(false);
                   }}
                   onClick={() => {
-                    navigator.clipboard.writeText(StringifyArray(pairs));
+                    navigator.clipboard.writeText(createCopyString(pairs));
                   }}
                   style={{ background: "transparent", border: 0 }}
                 >

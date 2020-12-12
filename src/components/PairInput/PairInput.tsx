@@ -28,13 +28,13 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
     if (JSON.stringify(tags) !== JSON.stringify(names)) {
       setTags(names);
     }
-  }, [names]);
+  }, [names]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (JSON.stringify(tags) !== JSON.stringify(names)) {
       onNewName(tags);
     }
-  }, [tags]);
+  }, [tags]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleInput = (e: any) => {
     e.which = e.which || e.keyCode;
@@ -103,8 +103,9 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
   return (
     <>
       <div className="input-container">
-        {tags.map((item: string) => (
+        {tags.map((item: string, index) => (
           <Tag
+            key={index}
             style={{ margin: "4px", display: "flex", alignItems: "center" }}
             closable
             onClose={(e) => {
