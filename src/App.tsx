@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Tooltip } from "antd";
 import "./App.css";
 import PairInput from "./components/PairInput/PairInput";
 import PairCard from "./components/PairCard/PairCard";
@@ -17,6 +17,8 @@ function App() {
   const [doRollAnimation, setDoRollAnimation] = useState<number>(0);
 
   const [hover, setHover] = useState<boolean>();
+
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>();
 
   function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
@@ -121,20 +123,37 @@ function App() {
           <Row align="middle" justify="center">
             <div className={"copy-container"}>
               {pairs.length > 0 && (
-                <Button
-                  onMouseEnter={() => {
-                    setHover(true);
-                  }}
-                  onMouseLeave={() => {
-                    setHover(false);
-                  }}
-                  onClick={() => {
-                    navigator.clipboard.writeText(createCopyString(pairs));
-                  }}
-                  style={{ background: "transparent", border: 0 }}
+                <Tooltip
+                  placement="right"
+                  color={"white"}
+                  overlayClassName={"copied-tooltip"}
+                  trigger={"click"}
+                  visible={tooltipVisible}
+                  title={
+                    <span style={{ color: "black", fontWeight: "bold" }}>
+                      Copied!
+                    </span>
+                  }
                 >
-                  <CopyOutlined className="copy-icon" />
-                </Button>
+                  <Button
+                    onMouseEnter={() => {
+                      setHover(true);
+                    }}
+                    onMouseLeave={() => {
+                      setHover(false);
+                    }}
+                    onClick={() => {
+                      setTooltipVisible(true);
+                      setTimeout(() => {
+                        setTooltipVisible(false);
+                      }, 1000);
+                      navigator.clipboard.writeText(createCopyString(pairs));
+                    }}
+                    style={{ background: "transparent", border: 0 }}
+                  >
+                    <CopyOutlined className="copy-icon" />
+                  </Button>
+                </Tooltip>
               )}
             </div>
           </Row>

@@ -75,6 +75,12 @@
   font-size: 25px;
 }
 
+.ant-btn:hover,
+.ant-btn:focus,
+.ant-btn:active {
+  color: #a284c2;
+}
+
 @media (max-width: 800px) {
   .pair-card-container {
     grid-template-columns: repeat(2, 200px);
