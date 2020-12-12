@@ -111,17 +111,26 @@ function App() {
           </Row>
 
           <Row align="middle" justify="center" gutter={[16, 1]}>
-              <div
-                className={`pair-card-container ${hover ? "pair-card-container-hover" : ""}`}
-              >
-                {/* Drag/Drop Logic */}
-                {/* <DragDropContext onDragEnd={() => {}}> */}
-                  {pairs.map((pair, index) => (
-                        <PairCard key={index} pair={pair} pairIndex={index} />
-                  ))}
-                {/* </DragDropContext> */}
-                {/* /////////////// */}
-              </div>
+            <div
+              className={`pair-card-container ${
+                hover ? "pair-card-container-hover" : ""
+              }`}
+            >
+              {/* Drag/Drop Logic */}
+              {/* <DragDropContext onDragEnd={() => {}}> */}
+              {pairs.map((pair, index) => (
+                <PairCard
+                  key={index}
+                  pair={pair}
+                  pairIndex={index}
+                  onPairChange={(newPair) => {
+                    pairs.splice(index, 1, newPair);
+                  }}
+                />
+              ))}
+              {/* </DragDropContext> */}
+              {/* /////////////// */}
+            </div>
           </Row>
           <Row align="middle" justify="center">
             <div className={"copy-container"}>

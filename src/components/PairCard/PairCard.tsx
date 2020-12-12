@@ -1,43 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Tag } from "antd";
 import "./PairCard.css";
-import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
 
 interface PairCardProps {
   pair: string[];
   pairIndex: number;
+  onPairChange: (newPair: string[]) => void;
 }
 
-function PairCard({ pair, pairIndex }: PairCardProps) {
+function PairCard({ pair, pairIndex, onPairChange }: PairCardProps) {
   /// Drag/Drop Logic ///
   const reorder = (list: any[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
-  
+
     return result;
   };
 
   const [items, setItems] = useState<string[]>(pair);
 
+  useEffect(() => {
+    setItems(pair);
+  }, [pair]);
+
   const onDragEnd = (result: DropResult) => {
-    console.log(result)
+    console.log(result);
     if (!result.destination) {
       return;
     }
-  
+
     const newItems = reorder(
       items,
       result.source.index,
       result.destination.index
     );
-  
+
     setItems(newItems);
-  }
+    onPairChange(newItems);
+  };
   ///////////////////////
 
   return (
-    /// Drag/Drop Logic /// 
+    /// Drag/Drop Logic ///
     <DragDropContext onDragEnd={onDragEnd}>
       <Card
         key={pairIndex}
