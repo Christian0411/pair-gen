@@ -39,28 +39,52 @@ function DndCards({ pairs, onPairChange }: DndCardsProps) {
         return result;
     };
     
-    function onDragEnd(result:any) {
-        const { source, destination } = result;
-    
+    const moveAndUpdatePairs = (source:any, destination:any) => {
         if (!destination) {
-          return;
+            return;
         }
+        
         const sInd = +source.droppableId;
         const dInd = +destination.droppableId;
     
         if (sInd === dInd) {
-          const items = reorder(pairs[sInd], source.index, destination.index);
-          const newPairs:any = [...pairs];
-          newPairs[sInd] = items;
-          setDndPairs(newPairs);
+            const items = reorder(pairs[sInd], source.index, destination.index);
+            const newPairs:any = [...pairs];
+            newPairs[sInd] = items;
+            setDndPairs(newPairs);
         } else {
-          const result = move(pairs[sInd], pairs[dInd], source, destination);
-          const newPairs = [...pairs];
-          newPairs[sInd] = result[sInd];
-          newPairs[dInd] = result[dInd];
-    
-          setDndPairs(newPairs.filter(group => group.length));
+            const result = move(pairs[sInd], pairs[dInd], source, destination);
+            const newPairs = [...pairs];
+            newPairs[sInd] = result[sInd];
+            newPairs[dInd] = result[dInd];
+        
+            setDndPairs(newPairs.filter(group => group.length));
         }
+    }
+    
+    function onDragEnd(result:any) {
+        const { source, destination } = result;
+
+        if(result.combine){
+            const swappeeIndex = pairs[result.combine.droppableId].findIndex(tag => tag === result.combine.draggableId);
+            const swappeeSource = {"droppableId": result.combine.droppableId, "index": swappeeIndex}
+
+            const swapperSource = source;
+            const swapperDestination = swappeeSource;
+
+            const swappeeDestination = swapperSource
+
+            // swappee
+            moveAndUpdatePairs(swappeeSource, swappeeDestination);
+
+            // swapper
+            moveAndUpdatePairs(swapperSource, swapperDestination);
+
+        }
+        else{
+            moveAndUpdatePairs(source, destination);
+        }
+        
     }
 
     return (

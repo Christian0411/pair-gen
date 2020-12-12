@@ -20,7 +20,7 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
       bordered={false}
       data-visible={1}
     >
-      <Droppable key={pairIndex} droppableId={`${pairIndex}`} direction="horizontal">
+      <Droppable key={pairIndex} droppableId={`${pairIndex}`} direction="horizontal" isCombineEnabled>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <div className={"tag-container"}>
