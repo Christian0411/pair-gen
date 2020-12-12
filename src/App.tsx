@@ -8,6 +8,7 @@ import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
 import { CopyOutlined } from "@ant-design/icons";
 import RollButton from "./components/RollButton/RollButton";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
@@ -113,9 +114,13 @@ function App() {
               <div
                 className={`pair-card-container ${hover ? "pair-card-container-hover" : ""}`}
               >
-                {pairs.map((pair, index) => (
-                      <PairCard key={index} pair={pair} pairIndex={index} />
-                ))}
+                {/* Drag/Drop Logic */}
+                {/* <DragDropContext onDragEnd={() => {}}> */}
+                  {pairs.map((pair, index) => (
+                        <PairCard key={index} pair={pair} pairIndex={index} />
+                  ))}
+                {/* </DragDropContext> */}
+                {/* /////////////// */}
               </div>
           </Row>
           <Row align="middle" justify="center">
