@@ -25,27 +25,29 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
         isCombineEnabled
       >
         {(provided, snapshot) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            <div className={"tag-container"}>
-              {pair.map((person, index) => (
-                <Draggable
-                  index={index}
-                  key={`${person}`}
-                  draggableId={`${person}`}
-                >
-                  {(provided, snapshot) => (
-                    <span
-                      className="tag"
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      {person}
-                    </span>
-                  )}
-                </Draggable>
-              ))}
-            </div>
+          <div
+            className={"tag-container"}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {pair.map((person, index) => (
+              <Draggable
+                index={index}
+                key={`${person}`}
+                draggableId={`${person}`}
+              >
+                {(provided, snapshot) => (
+                  <span
+                    className="tag"
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                  >
+                    {person}
+                  </span>
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
           </div>
         )}

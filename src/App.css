@@ -39,7 +39,7 @@
   padding-top: 20px;
 } */
 
-.pair-card-container {
+/* .pair-card-container {
   margin: 20px;
   padding: 10px;
   display: grid;
@@ -48,17 +48,27 @@
   column-gap: 10px;
   row-gap: 10px;
   border: 1px solid transparent;
+} */
+
+.pair-card-container {
+  display: flex;
+  align-self: center;
+  flex-wrap: wrap;
+  width: 50%;
+  border: 1px solid transparent;
+  justify-content: center;
+  padding-top: 20px;
 }
 
 .pair-card-container-hover {
-  margin: 20px;
-  padding: 10px;
-  display: grid;
+  display: flex;
+  flex-direction: row;
   align-self: center;
-  grid-template-columns: 200px 200px 200px 200px;
-  column-gap: 10px;
-  row-gap: 10px;
+  flex-wrap: wrap;
+  width: 50%;
   border: 1px solid #a284c2;
+  justify-content: center;
+  padding-top: 20px;
 }
 
 .copy-container {

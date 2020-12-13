@@ -115,7 +115,10 @@ function App() {
                 hover ? "pair-card-container-hover" : ""
               }`}
             >
-              <DndCards pairs={pairs} onPairChange={(newPairs) => setPairs(newPairs)}/>
+              <DndCards
+                pairs={pairs}
+                onPairChange={(newPairs) => setPairs(newPairs)}
+              />
             </div>
           </Row>
           <Row align="middle" justify="center">
