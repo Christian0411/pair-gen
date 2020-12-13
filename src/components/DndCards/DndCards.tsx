@@ -5,9 +5,10 @@ import { DragDropContext } from "react-beautiful-dnd";
 interface DndCardsProps {
   pairs: string[][];
   onPairChange: (newPairs: string[][]) => void;
+  highlightClassName: string;
 }
 
-function DndCards({ pairs, onPairChange }: DndCardsProps) {
+function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   const [dndPairs, setDndPairs] = useState<string[][]>(pairs);
 
   useEffect(() => {
@@ -129,7 +130,12 @@ function DndCards({ pairs, onPairChange }: DndCardsProps) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {dndPairs.map((pair, index) => (
-        <PairCard key={index} pair={pair} pairIndex={index} />
+        <PairCard
+          highlightClassName={highlightClassName}
+          key={index}
+          pair={pair}
+          pairIndex={index}
+        />
       ))}
     </DragDropContext>
   );

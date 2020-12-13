@@ -116,6 +116,7 @@ function App() {
               }`}
             >
               <DndCards
+                highlightClassName={hover ? "pair-card-hover" : ""}
                 pairs={pairs}
                 onPairChange={(newPairs) => setPairs(newPairs)}
               />
@@ -137,6 +138,7 @@ function App() {
                   }
                 >
                   <Button
+                    className="copy-button"
                     onMouseEnter={() => {
                       setHover(true);
                     }}

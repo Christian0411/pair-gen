@@ -6,13 +6,14 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 interface PairCardProps {
   pair: string[];
   pairIndex: number;
+  highlightClassName: string;
 }
 
-function PairCard({ pair, pairIndex }: PairCardProps) {
+function PairCard({ pair, pairIndex, highlightClassName }: PairCardProps) {
   return (
     <Card
       key={pairIndex}
-      className={"card"}
+      className={`card ${highlightClassName}`}
       title={`Pair ${pairIndex}`}
       size={"small"}
       bordered={false}

@@ -1,16 +1,24 @@
 .tag-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 80%;
 }
 
 .card {
   width: 200px;
   margin: 10px;
+  border: 2px solid transparent;
+}
+
+.pair-card-hover {
+  width: 200px;
+  margin: 10px;
+  box-shadow: 0 0 5px #a284c2;
+  border: 2px solid #a284c2;
 }
 
 .ant-card-body {
-  height: 100%;
+  height: 90%;
 }
 
 .card[data-visible="1"] {
