@@ -1,10 +1,7 @@
 import React from "react";
 import { Card, Tag } from "antd";
 import "./PairCard.css";
-import {
-  Draggable,
-  Droppable
-} from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 
 interface PairCardProps {
   pair: string[];
@@ -20,7 +17,12 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
       bordered={false}
       data-visible={1}
     >
-      <Droppable key={pairIndex} droppableId={`${pairIndex}`} direction="horizontal" isCombineEnabled>
+      <Droppable
+        key={pairIndex}
+        droppableId={`${pairIndex}`}
+        direction="horizontal"
+        isCombineEnabled
+      >
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <div className={"tag-container"}>
@@ -31,14 +33,14 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
                   draggableId={`${person}`}
                 >
                   {(provided, snapshot) => (
-                    <Tag
+                    <span
+                      className="tag"
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      color="#56ca8d"
                     >
                       {person}
-                    </Tag>
+                    </span>
                   )}
                 </Draggable>
               ))}
