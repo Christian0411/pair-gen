@@ -108,16 +108,21 @@ function DndCards({ pairs, onPairChange }: DndCardsProps) {
 
       const swapperSource = source;
       const swapperDestination = swappeeSource;
-
       const swappeeDestination = swapperSource;
-      const newPairs = swap(
+
+      const swapResult = swap(
         dndPairs[swapperSource.droppableId],
         dndPairs[swapperDestination.droppableId],
         swapperSource,
         swapperDestination
       );
-      console.log(newPairs);
-      setDndPairs([newPairs[0], newPairs[1]]);
+      const newPairs = [...dndPairs];
+      newPairs[source.droppableId] = swapResult[source.droppableId];
+      newPairs[swapperDestination.droppableId] =
+        swapResult[swapperDestination.droppableId];
+
+      console.log([...newPairs]);
+      setDndPairs([...newPairs]);
     } else {
       moveAndUpdatePairs(source, destination);
     }
