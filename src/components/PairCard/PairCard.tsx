@@ -14,13 +14,14 @@ function PairCard({ pair, pairIndex }: PairCardProps) {
       key={pairIndex}
       className={"card"}
       title={`Pair ${pairIndex}`}
+      size={"small"}
       bordered={false}
       data-visible={1}
     >
       <Droppable
         key={pairIndex}
+        direction={"vertical"}
         droppableId={`${pairIndex}`}
-        direction="horizontal"
         isCombineEnabled
       >
         {(provided, snapshot) => (
