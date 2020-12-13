@@ -55,7 +55,6 @@ function DndCards({ pairs, onPairChange }: DndCardsProps) {
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
     const [removed] = sourceClone.splice(droppableSource.index, 1);
-
     const [removedDes] = destClone.splice(
       droppableDestination.index,
       1,
@@ -108,8 +107,8 @@ function DndCards({ pairs, onPairChange }: DndCardsProps) {
 
       const swapperSource = source;
       const swapperDestination = swappeeSource;
-      const swappeeDestination = swapperSource;
 
+      if (swapperSource.droppableId === swapperDestination.droppableId) return;
       const swapResult = swap(
         dndPairs[swapperSource.droppableId],
         dndPairs[swapperDestination.droppableId],
@@ -117,11 +116,10 @@ function DndCards({ pairs, onPairChange }: DndCardsProps) {
         swapperDestination
       );
       const newPairs = [...dndPairs];
+      console.log("swapResult", swapResult);
       newPairs[source.droppableId] = swapResult[source.droppableId];
       newPairs[swapperDestination.droppableId] =
         swapResult[swapperDestination.droppableId];
-
-      console.log([...newPairs]);
       setDndPairs([...newPairs]);
     } else {
       moveAndUpdatePairs(source, destination);
