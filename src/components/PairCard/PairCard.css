@@ -26,9 +26,13 @@
 }
 
 .tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 4px;
-  text-align: center;
-  margin-right: 8px;
+  height: 40px;
+  font-size: 15px;
+  align-items: center;
   opacity: 1;
   color: white;
   background: #63b89e;
@@ -36,7 +40,11 @@
   border-top-color: transparent;
   border-right-color: transparent;
   border-bottom-color: transparent;
+  flex-shrink: 0;
   border-left-color: transparent;
+}
+.swap-cursor {
+  cursor: url("../../imgs/swap.png"), default;
 }
 
 @keyframes data-visible {

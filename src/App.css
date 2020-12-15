@@ -18,7 +18,12 @@
   font-size: 70px;
   color: white;
 }
-
+.credits {
+  position: fixed;
+  color: dimgray;
+  bottom: 0;
+  left: 10px;
+}
 .App-header {
   background-color: #303046;
   min-height: 100vh;

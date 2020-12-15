@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Tag } from "antd";
 import "./PairCard.css";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import swap from "../../imgs/swap.png";
 
 interface PairCardProps {
   pair: string[];
@@ -10,6 +11,20 @@ interface PairCardProps {
 }
 
 function PairCard({ pair, pairIndex, highlightClassName }: PairCardProps) {
+  const getItemStyle = (draggableStyle: any, snapshot: any) => {
+    const style = {
+      ...draggableStyle,
+
+      // opt out of pointer-events: none for dragging items
+      ...(snapshot.isDragging && { pointerEvents: "auto" }),
+    };
+
+    if (snapshot.combineWith) {
+      return { ...style, cursor: `url(${swap}), auto` };
+    }
+    return style;
+  };
+
   return (
     <Card
       key={pairIndex}
@@ -39,10 +54,14 @@ function PairCard({ pair, pairIndex, highlightClassName }: PairCardProps) {
               >
                 {(provided, snapshot) => (
                   <span
-                    className="tag"
+                    className={"tag"}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    style={getItemStyle(
+                      provided.draggableProps.style,
+                      snapshot
+                    )}
                   >
                     {person}
                   </span>
@@ -56,4 +75,5 @@ function PairCard({ pair, pairIndex, highlightClassName }: PairCardProps) {
     </Card>
   );
 }
+
 export default PairCard;
