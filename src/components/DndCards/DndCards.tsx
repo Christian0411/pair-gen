@@ -92,6 +92,7 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       let newPairs = dndPairs;
       const temp = newPairs[source.droppableId].splice(source.index, 1);
       newPairs = newPairs.concat([temp])
+      // this log appears twice: once with the correct newPairs, the other with the new card missing
       console.log(newPairs)
       setDndPairs(newPairs)
     }
