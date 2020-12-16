@@ -75,10 +75,6 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   };
 
   const moveAndUpdatePairs = (source: any, destination: any) => {
-    if (!destination) {
-      return;
-    }
-
     const sInd = +source.droppableId;
     const dInd = +destination.droppableId;
 
@@ -104,6 +100,9 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
 
   function onDragEnd(result: any) {
     const { source, destination } = result;
+    if (!destination && !result.combine) {
+      return;
+    }
 
     if (result.combine) {
       const swappeeIndex = dndPairs[result.combine.droppableId].findIndex(
