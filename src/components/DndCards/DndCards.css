@@ -10,6 +10,10 @@
   width: 200px;
 }
 
+.add-new-card-container-hover {
+  box-shadow: 0 0 5px #a284c2;
+}
+
 .add-new-card {
   color: #a284c2;
   font-size: 50px;

@@ -88,15 +88,11 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       newPairs[sInd] = items;
       setDndPairs(newPairs);
     } else if (destination.droppableId > dndPairs.length-1) {
-      // addNewCardLogicHere
       let newPairs = dndPairs;
       const temp = newPairs[source.droppableId].splice(source.index, 1);
       newPairs = newPairs.concat([temp])
-      // this log appears twice: once with the correct newPairs, the other with the new card missing
-      console.log(newPairs)
-      setDndPairs(newPairs)
-    }
-    else {
+      setDndPairs(newPairs.filter((group) => group.length))
+    } else {
       const result = move(dndPairs[sInd], dndPairs[dInd], source, destination);
       const newPairs = [...dndPairs];
       newPairs[sInd] = result[sInd];
@@ -108,12 +104,6 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
 
   function onDragEnd(result: any) {
     const { source, destination } = result;
-
-    if (destination.droppableId === "add-new-card"){
-      // addNewCardLogicHere
-      destination.droppableId = dndPairs.length.toString()
-      moveAndUpdatePairs(source, destination);
-    }
 
     if (result.combine) {
       const swappeeIndex = dndPairs[result.combine.droppableId].findIndex(
@@ -140,6 +130,9 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       newPairs[swapperDestination.droppableId] =
         swapResult[swapperDestination.droppableId];
       setDndPairs([...newPairs]);
+    } else if (destination.droppableId === "add-new-card"){
+      destination.droppableId = dndPairs.length.toString()
+      moveAndUpdatePairs(source, destination);
     } else {
       moveAndUpdatePairs(source, destination);
     }
