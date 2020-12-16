@@ -160,7 +160,7 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       >
         {(provided, snapshot) => (
           <div
-            className="add-new-card-container"
+            className={`add-new-card-container ${snapshot.isDraggingOver ? "add-new-card-container-hover" : ""}`}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
