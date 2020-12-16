@@ -87,7 +87,15 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       const newPairs: any = [...dndPairs];
       newPairs[sInd] = items;
       setDndPairs(newPairs);
-    } else {
+    } else if (destination.droppableId > dndPairs.length-1) {
+      // addNewCardLogicHere
+      let newPairs = dndPairs;
+      const temp = newPairs[source.droppableId].splice(source.index, 1);
+      newPairs = newPairs.concat([temp])
+      console.log(newPairs)
+      setDndPairs(newPairs)
+    }
+    else {
       const result = move(dndPairs[sInd], dndPairs[dInd], source, destination);
       const newPairs = [...dndPairs];
       newPairs[sInd] = result[sInd];
@@ -98,8 +106,13 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   };
 
   function onDragEnd(result: any) {
-    console.log({ result });
     const { source, destination } = result;
+
+    if (destination.droppableId === "add-new-card"){
+      // addNewCardLogicHere
+      destination.droppableId = dndPairs.length.toString()
+      moveAndUpdatePairs(source, destination);
+    }
 
     if (result.combine) {
       const swappeeIndex = dndPairs[result.combine.droppableId].findIndex(
@@ -132,7 +145,6 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   }
 
   const onBeforeCapture = () => {
-    console.log("test");
     setDndPairs([...dndPairs]);
   };
 

@@ -115,7 +115,7 @@ function App() {
                 hover ? "pair-card-container-hover" : ""
               }`}
             >
-              {pairs.length > 0 && (
+              {pairs.filter((pair) => pair.length).length > 0 && (
                 <DndCards
                   highlightClassName={hover ? "pair-card-hover" : ""}
                   pairs={pairs}
@@ -126,7 +126,7 @@ function App() {
           </Row>
           <Row align="middle" justify="center">
             <div className={"copy-container"}>
-              {pairs.length > 0 && (
+              {pairs.filter((pair) => pair.length).length > 0 && (
                 <Tooltip
                   placement="right"
                   color={"white"}
