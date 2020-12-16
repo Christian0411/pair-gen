@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Tag } from "antd";
 import "./PairCard.css";
 import { Draggable, Droppable } from "react-beautiful-dnd";
@@ -8,9 +8,18 @@ interface PairCardProps {
   pair: string[];
   pairIndex: number;
   highlightClassName: string;
+  isDragging?: boolean;
 }
 
-function PairCard({ pair, pairIndex, highlightClassName }: PairCardProps) {
+function PairCard({
+  pair,
+  pairIndex,
+  highlightClassName,
+  isDragging,
+}: PairCardProps) {
+  useEffect(() => {
+    console.table(pair);
+  }, []);
   const getItemStyle = (draggableStyle: any, snapshot: any) => {
     const style = {
       ...draggableStyle,
@@ -28,11 +37,11 @@ function PairCard({ pair, pairIndex, highlightClassName }: PairCardProps) {
   return (
     <Card
       key={pairIndex}
-      className={`card ${highlightClassName}`}
+      className={`card ${pair.length || "add-new-pair"}  ${highlightClassName}`}
       title={`Pair ${pairIndex}`}
       size={"small"}
       bordered={false}
-      data-visible={1}
+      data-visible={isDragging ? 0 : 1}
     >
       <Droppable
         key={pairIndex}

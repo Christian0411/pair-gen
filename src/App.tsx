@@ -12,7 +12,7 @@ import DndCards from "./components/DndCards/DndCards";
 function App() {
   const [names, setNames] = useState<string[]>([]);
 
-  const [pairs, setPairs] = useState<string[][]>([]);
+  const [pairs, setPairs] = useState<string[][]>([[]]);
 
   const [doRollAnimation, setDoRollAnimation] = useState<number>(0);
 
@@ -115,11 +115,13 @@ function App() {
                 hover ? "pair-card-container-hover" : ""
               }`}
             >
-              <DndCards
-                highlightClassName={hover ? "pair-card-hover" : ""}
-                pairs={pairs}
-                onPairChange={(newPairs) => setPairs(newPairs)}
-              />
+              {pairs.length > 0 && (
+                <DndCards
+                  highlightClassName={hover ? "pair-card-hover" : ""}
+                  pairs={pairs}
+                  onPairChange={(newPairs) => setPairs(newPairs)}
+                />
+              )}
             </div>
           </Row>
           <Row align="middle" justify="center">

@@ -1,0 +1,16 @@
+.add-new-card-container {
+  display: flex;
+  opacity: 0.5;
+  justify-content: center;
+  align-items: center;
+  /* box-shadow: 0 0 5px #a284c2; */
+  border: 3px dashed #a284c2;
+  margin: 10px;
+  min-height: 110px;
+  width: 200px;
+}
+
+.add-new-card {
+  color: #a284c2;
+  font-size: 50px;
+}

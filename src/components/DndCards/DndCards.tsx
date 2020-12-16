@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PairCard from "../PairCard/PairCard";
-import { DragDropContext } from "react-beautiful-dnd";
-
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import "./DndCards.css";
+import { PlusOutlined } from "@ant-design/icons";
 interface DndCardsProps {
   pairs: string[][];
   onPairChange: (newPairs: string[][]) => void;
@@ -10,6 +11,8 @@ interface DndCardsProps {
 
 function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   const [dndPairs, setDndPairs] = useState<string[][]>(pairs);
+
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     onPairChange(dndPairs);
@@ -95,6 +98,7 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   };
 
   function onDragEnd(result: any) {
+    console.log({ result });
     const { source, destination } = result;
 
     if (result.combine) {
@@ -117,7 +121,7 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
         swapperDestination
       );
       const newPairs = [...dndPairs];
-      console.log("swapResult", swapResult);
+
       newPairs[source.droppableId] = swapResult[source.droppableId];
       newPairs[swapperDestination.droppableId] =
         swapResult[swapperDestination.droppableId];
@@ -127,8 +131,13 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
     }
   }
 
+  const onBeforeCapture = () => {
+    console.log("test");
+    setDndPairs([...dndPairs]);
+  };
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
       {dndPairs.map((pair, index) => (
         <PairCard
           highlightClassName={highlightClassName}
@@ -137,6 +146,29 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
           pairIndex={index}
         />
       ))}
+      <Droppable
+        key={"add-new-card"}
+        direction={"vertical"}
+        droppableId={`add-new-card`}
+        isCombineEnabled
+      >
+        {(provided, snapshot) => (
+          <div
+            className="add-new-card-container"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <PlusOutlined className="add-new-card" />
+            <span
+              style={{
+                display: "none",
+              }}
+            >
+              {provided.placeholder}
+            </span>
+          </div>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 }
