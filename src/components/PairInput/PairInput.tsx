@@ -63,6 +63,14 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
     }
   };
 
+  const editTag = (e: any, item: string, index: number) => {
+    console.log(item, index)
+    // e.preventDefault();
+    // const newTags = tags.filter((tag) => tag !== item)
+    // setTags([...newTags]);
+    // setNameInput(item);
+  }
+
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pasted = e.clipboardData.getData("Text");
     let pastedTags;
@@ -108,6 +116,7 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
             key={index}
             style={{ margin: "4px", display: "flex", alignItems: "center" }}
             closable
+            onDoubleClick={(e)=> editTag(e, item, index)}
             onClose={(e) => {
               e.preventDefault();
               deleteTag(item);
