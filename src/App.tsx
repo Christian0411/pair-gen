@@ -170,6 +170,7 @@ function App() {
       </div>
       <a
         className="version"
+        rel="noreferrer"
         target="_blank"
         href="https://github.com/Christian0411/pair-gen"
       >

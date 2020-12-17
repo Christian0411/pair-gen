@@ -71,7 +71,7 @@ function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
   };
 
   const editTag = (e: any, item: string, index: number) => {
-    console.log(item, index)
+    // console.log(item, index)
     // e.preventDefault();
     // const newTags = tags.filter((tag) => tag !== item)
     // setTags([...newTags]);

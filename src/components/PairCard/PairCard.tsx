@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { Card, Tag } from "antd";
+import React  from "react";
+import { Card } from "antd";
 import "./PairCard.css";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, DraggableStateSnapshot, Droppable } from "react-beautiful-dnd";
 import swap from "../../imgs/swap.png";
 
 interface PairCardProps {
@@ -17,10 +17,7 @@ function PairCard({
   highlightClassName,
   isDragging,
 }: PairCardProps) {
-  useEffect(() => {
-    console.table(pair);
-  }, []);
-  const getItemStyle = (draggableStyle: any, snapshot: any) => {
+  const getItemStyle = (draggableStyle: any, snapshot: DraggableStateSnapshot) => {
     const style = {
       ...draggableStyle,
 

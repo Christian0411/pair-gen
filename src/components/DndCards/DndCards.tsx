@@ -17,19 +17,19 @@ function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsP
 
   useEffect(() => {
     onPairChange(dndPairs);
-  }, [dndPairs]);
+  }, [dndPairs]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     onDrag(dragging);
-  }, [dragging]);
+  }, [dragging]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (JSON.stringify(dndPairs) !== JSON.stringify(pairs)) {
       setDndPairs(pairs);
     }
-  }, [pairs]);
+  }, [pairs]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const reorder = (list: any, startIndex: any, endIndex: any) => {
+  const reorder = (list: string[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -38,8 +38,8 @@ function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsP
   };
 
   const move = (
-    source: any,
-    destination: any,
+    source: string[],
+    destination: string[],
     droppableSource: any,
     droppableDestination: any
   ) => {
@@ -56,8 +56,8 @@ function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsP
   };
 
   const swap = (
-    source: any,
-    destination: any,
+    source: string[],
+    destination: string[],
     droppableSource: any,
     droppableDestination: any
   ) => {
@@ -85,7 +85,7 @@ function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsP
 
     if (sInd === dInd) {
       const items = reorder(dndPairs[sInd], source.index, destination.index);
-      const newPairs: any = [...dndPairs];
+      const newPairs: string[][] = [...dndPairs];
       newPairs[sInd] = items;
       setDndPairs(newPairs);
     } else if (destination.droppableId > dndPairs.length - 1) {
