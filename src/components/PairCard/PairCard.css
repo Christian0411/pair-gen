@@ -4,6 +4,10 @@
   height: 80%;
 }
 
+.add-new-pair {
+  opacity: 0.5 !important;
+}
+
 .card {
   width: 200px;
   margin: 10px;
@@ -23,6 +27,15 @@
 
 .card[data-visible="1"] {
   animation: data-visible 0.5s 1;
+}
+
+@keyframes data-visible {
+  100% {
+    opacity: 1;
+  }
+  0% {
+    opacity: 0;
+  }
 }
 
 .tag {
@@ -45,13 +58,4 @@
 }
 .swap-cursor {
   cursor: url("../../imgs/swap.png"), default;
-}
-
-@keyframes data-visible {
-  100% {
-    opacity: 1;
-  }
-  0% {
-    opacity: 0;
-  }
 }

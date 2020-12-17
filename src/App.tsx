@@ -12,7 +12,7 @@ import DndCards from "./components/DndCards/DndCards";
 function App() {
   const [names, setNames] = useState<string[]>([]);
 
-  const [pairs, setPairs] = useState<string[][]>([]);
+  const [pairs, setPairs] = useState<string[][]>([[]]);
 
   const [doRollAnimation, setDoRollAnimation] = useState<number>(0);
 
@@ -115,16 +115,18 @@ function App() {
                 hover ? "pair-card-container-hover" : ""
               }`}
             >
-              <DndCards
-                highlightClassName={hover ? "pair-card-hover" : ""}
-                pairs={pairs}
-                onPairChange={(newPairs) => setPairs(newPairs)}
-              />
+              {pairs.filter((pair) => pair.length).length > 0 && (
+                <DndCards
+                  highlightClassName={hover ? "pair-card-hover" : ""}
+                  pairs={pairs}
+                  onPairChange={(newPairs) => setPairs(newPairs)}
+                />
+              )}
             </div>
           </Row>
           <Row align="middle" justify="center">
             <div className={"copy-container"}>
-              {pairs.length > 0 && (
+              {pairs.filter((pair) => pair.length).length > 0 && (
                 <Tooltip
                   placement="right"
                   color={"white"}
@@ -163,15 +165,19 @@ function App() {
         </Col>
       </div>
       <a
-        className="credits"
+        className="version"
         target="_blank"
         href="https://github.com/Christian0411/pair-gen"
       >
-        Website by Oscar Martinez & Christian Canizares
+        Version 1.1
         <GithubOutlined
           style={{ marginLeft: "10px", fontSize: "16px", color: "#08c" }}
         />
       </a>
+
+      <span className="credits">
+        Website by Oscar Martinez & Christian Canizares
+      </span>
 
       <ParticlesBg color="#56ca8d" num={40} type="cobweb" bg={true} />
     </>

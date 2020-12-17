@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PairCard from "../PairCard/PairCard";
-import { DragDropContext } from "react-beautiful-dnd";
-
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import "./DndCards.css";
+import { PlusOutlined } from "@ant-design/icons";
 interface DndCardsProps {
   pairs: string[][];
   onPairChange: (newPairs: string[][]) => void;
@@ -10,6 +11,8 @@ interface DndCardsProps {
 
 function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   const [dndPairs, setDndPairs] = useState<string[][]>(pairs);
+
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     onPairChange(dndPairs);
@@ -72,10 +75,6 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   };
 
   const moveAndUpdatePairs = (source: any, destination: any) => {
-    if (!destination) {
-      return;
-    }
-
     const sInd = +source.droppableId;
     const dInd = +destination.droppableId;
 
@@ -84,6 +83,11 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       const newPairs: any = [...dndPairs];
       newPairs[sInd] = items;
       setDndPairs(newPairs);
+    } else if (destination.droppableId > dndPairs.length - 1) {
+      let newPairs = dndPairs;
+      const temp = newPairs[source.droppableId].splice(source.index, 1);
+      newPairs = newPairs.concat([temp]);
+      setDndPairs(newPairs.filter((group) => group.length));
     } else {
       const result = move(dndPairs[sInd], dndPairs[dInd], source, destination);
       const newPairs = [...dndPairs];
@@ -96,6 +100,9 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
 
   function onDragEnd(result: any) {
     const { source, destination } = result;
+    if (!destination && !result.combine) {
+      return;
+    }
 
     if (result.combine) {
       const swappeeIndex = dndPairs[result.combine.droppableId].findIndex(
@@ -117,18 +124,25 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
         swapperDestination
       );
       const newPairs = [...dndPairs];
-      console.log("swapResult", swapResult);
+
       newPairs[source.droppableId] = swapResult[source.droppableId];
       newPairs[swapperDestination.droppableId] =
         swapResult[swapperDestination.droppableId];
       setDndPairs([...newPairs]);
+    } else if (destination.droppableId === "add-new-card") {
+      destination.droppableId = dndPairs.length.toString();
+      moveAndUpdatePairs(source, destination);
     } else {
       moveAndUpdatePairs(source, destination);
     }
   }
 
+  const onBeforeCapture = () => {
+    setDndPairs([...dndPairs]);
+  };
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
       {dndPairs.map((pair, index) => (
         <PairCard
           highlightClassName={highlightClassName}
@@ -137,6 +151,31 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
           pairIndex={index}
         />
       ))}
+      <Droppable
+        key={"add-new-card"}
+        direction={"vertical"}
+        droppableId={`add-new-card`}
+        isCombineEnabled
+      >
+        {(provided, snapshot) => (
+          <div
+            className={`add-new-card-container ${
+              snapshot.isDraggingOver ? "add-new-card-container-hover" : ""
+            }`}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <PlusOutlined className="add-new-card" />
+            <span
+              style={{
+                display: "none",
+              }}
+            >
+              {provided.placeholder}
+            </span>
+          </div>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 }
