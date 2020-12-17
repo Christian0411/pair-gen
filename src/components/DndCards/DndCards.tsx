@@ -83,11 +83,11 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       const newPairs: any = [...dndPairs];
       newPairs[sInd] = items;
       setDndPairs(newPairs);
-    } else if (destination.droppableId > dndPairs.length-1) {
+    } else if (destination.droppableId > dndPairs.length - 1) {
       let newPairs = dndPairs;
       const temp = newPairs[source.droppableId].splice(source.index, 1);
-      newPairs = newPairs.concat([temp])
-      setDndPairs(newPairs.filter((group) => group.length))
+      newPairs = newPairs.concat([temp]);
+      setDndPairs(newPairs.filter((group) => group.length));
     } else {
       const result = move(dndPairs[sInd], dndPairs[dInd], source, destination);
       const newPairs = [...dndPairs];
@@ -129,8 +129,8 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       newPairs[swapperDestination.droppableId] =
         swapResult[swapperDestination.droppableId];
       setDndPairs([...newPairs]);
-    } else if (destination.droppableId === "add-new-card"){
-      destination.droppableId = dndPairs.length.toString()
+    } else if (destination.droppableId === "add-new-card") {
+      destination.droppableId = dndPairs.length.toString();
       moveAndUpdatePairs(source, destination);
     } else {
       moveAndUpdatePairs(source, destination);
@@ -159,7 +159,9 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
       >
         {(provided, snapshot) => (
           <div
-            className={`add-new-card-container ${snapshot.isDraggingOver ? "add-new-card-container-hover" : ""}`}
+            className={`add-new-card-container ${
+              snapshot.isDraggingOver ? "add-new-card-container-hover" : ""
+            }`}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

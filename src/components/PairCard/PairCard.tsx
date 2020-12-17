@@ -28,6 +28,9 @@ function PairCard({
       ...(snapshot.isDragging && { pointerEvents: "auto" }),
     };
 
+    if (snapshot.isDropAnimating)
+      return { ...style, transitionDuration: `0.001s` };
+
     if (snapshot.combineWith) {
       return { ...style, cursor: `url(${swap}), auto` };
     }
