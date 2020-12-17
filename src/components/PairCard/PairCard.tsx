@@ -1,8 +1,13 @@
-import React  from "react";
-import { Card } from "antd";
+import React, { ChangeEvent, useState } from "react";
+import { Card, Input } from "antd";
 import "./PairCard.css";
-import { Draggable, DraggableStateSnapshot, Droppable } from "react-beautiful-dnd";
+import {
+  Draggable,
+  DraggableStateSnapshot,
+  Droppable,
+} from "react-beautiful-dnd";
 import swap from "../../imgs/swap.png";
+import { EditOutlined } from "@ant-design/icons";
 
 interface PairCardProps {
   pair: string[];
@@ -17,7 +22,12 @@ function PairCard({
   highlightClassName,
   isDragging,
 }: PairCardProps) {
-  const getItemStyle = (draggableStyle: any, snapshot: DraggableStateSnapshot) => {
+  const [cardTitle, setCardTitle] = useState<string>(`Pair ${pairIndex}`);
+
+  const getItemStyle = (
+    draggableStyle: any,
+    snapshot: DraggableStateSnapshot
+  ) => {
     const style = {
       ...draggableStyle,
 
@@ -29,16 +39,32 @@ function PairCard({
       return { ...style, transitionDuration: `0.001s` };
 
     if (snapshot.combineWith) {
-      return { ...style, cursor: `url(${swap}), auto` };
+      return {
+        ...style,
+        cursor: `url(${swap}), auto`,
+      };
     }
     return style;
+  };
+
+  const titleInputOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCardTitle(e.target.value);
   };
 
   return (
     <Card
       key={pairIndex}
       className={`card ${pair.length || "add-new-pair"}  ${highlightClassName}`}
-      title={`Pair ${pairIndex}`}
+      title={
+        <div className="card-title-input-container">
+          {/* <EditOutlined /> */}
+          <input
+            className={`card-title-input`}
+            onChange={titleInputOnChange}
+            value={cardTitle}
+          />
+        </div>
+      }
       size={"small"}
       bordered={false}
       data-visible={isDragging ? 0 : 1}

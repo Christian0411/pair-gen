@@ -26,8 +26,7 @@ function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (dragging)
-      nameInputRef.current?.blur()
+    if (dragging) nameInputRef.current?.blur();
   }, [dragging]);
 
   useEffect(() => {
@@ -60,7 +59,6 @@ function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
         setNameInput(item);
       }
     } else if (e.which === Key.ENTER) {
-      e.target.blur();
       if (e.target.value.trim(" ") !== "") {
         addTag(e.target.value);
         onEnter([...tags, e.target.value]);
@@ -76,7 +74,7 @@ function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
     // const newTags = tags.filter((tag) => tag !== item)
     // setTags([...newTags]);
     // setNameInput(item);
-  }
+  };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pasted = e.clipboardData.getData("Text");
@@ -123,7 +121,7 @@ function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
             key={index}
             style={{ margin: "4px", display: "flex", alignItems: "center" }}
             closable
-            onDoubleClick={(e)=> editTag(e, item, index)}
+            onDoubleClick={(e) => editTag(e, item, index)}
             onClose={(e) => {
               e.preventDefault();
               deleteTag(item);

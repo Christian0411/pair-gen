@@ -20,6 +20,27 @@
   box-shadow: 0 0 5px #a284c2;
   border: 2px solid #a284c2;
 }
+.card-title-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a284c2;
+  margin-left: 3px;
+  padding: 5px;
+  width: 40%;
+}
+.card-title-input {
+  align-items: center;
+  color: white;
+  border: 0;
+  width: 100%;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.card-title-input:focus {
+  outline: 0;
+}
 
 .ant-card-body {
   height: 90%;
