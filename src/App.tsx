@@ -20,6 +20,8 @@ function App() {
 
   const [tooltipVisible, setTooltipVisible] = useState<boolean>();
 
+  const [dragging, setDragging] = useState<boolean>(false);
+
   function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -87,6 +89,7 @@ function App() {
           <Row align="middle" justify="center" gutter={[8, 8]}>
             <PairInput
               names={names}
+              dragging={dragging}
               onNewName={(names) => {
                 setNames(names);
               }}
@@ -120,6 +123,7 @@ function App() {
                   highlightClassName={hover ? "pair-card-hover" : ""}
                   pairs={pairs}
                   onPairChange={(newPairs) => setPairs(newPairs)}
+                  onDrag={(isDragging) => setDragging(isDragging)}
                 />
               )}
             </div>

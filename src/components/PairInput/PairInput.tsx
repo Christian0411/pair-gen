@@ -5,6 +5,7 @@ import "./PairInput.css";
 
 interface PairInputProps {
   names: string[];
+  dragging: boolean;
   onNewName: (names: string[]) => void;
   onEnter: (names: string[]) => void;
 }
@@ -17,12 +18,17 @@ const Key = {
   TAB: 9,
 };
 
-function PairInput({ names, onNewName, onEnter }: PairInputProps) {
+function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
   const [tags, setTags] = useState<string[]>([]);
 
   const [nameInput, setNameInput] = useState<string>("");
 
   const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (dragging)
+      nameInputRef.current?.blur()
+  }, [dragging]);
 
   useEffect(() => {
     if (JSON.stringify(tags) !== JSON.stringify(names)) {

@@ -6,17 +6,22 @@ import { PlusOutlined } from "@ant-design/icons";
 interface DndCardsProps {
   pairs: string[][];
   onPairChange: (newPairs: string[][]) => void;
+  onDrag: (isDragging: boolean) => void;
   highlightClassName: string;
 }
 
-function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
+function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsProps) {
   const [dndPairs, setDndPairs] = useState<string[][]>(pairs);
 
-  const [isDragging, setIsDragging] = useState(false);
+  const [dragging, setDragging] = useState<boolean>(false);
 
   useEffect(() => {
     onPairChange(dndPairs);
   }, [dndPairs]);
+
+  useEffect(() => {
+    onDrag(dragging);
+  }, [dragging]);
 
   useEffect(() => {
     if (JSON.stringify(dndPairs) !== JSON.stringify(pairs)) {
@@ -99,6 +104,7 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
   };
 
   function onDragEnd(result: any) {
+    setDragging(false)
     const { source, destination } = result;
     if (!destination && !result.combine) {
       return;
@@ -137,12 +143,8 @@ function DndCards({ pairs, onPairChange, highlightClassName }: DndCardsProps) {
     }
   }
 
-  const onBeforeCapture = () => {
-    setDndPairs([...dndPairs]);
-  };
-
   return (
-    <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
+    <DragDropContext onDragStart={() => setDragging(true)} onDragEnd={onDragEnd}>
       {dndPairs.map((pair, index) => (
         <PairCard
           highlightClassName={highlightClassName}
