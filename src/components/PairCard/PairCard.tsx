@@ -28,7 +28,7 @@ function PairCard({
       ...(snapshot.isDragging && { pointerEvents: "auto" }),
     };
 
-    if (snapshot.isDropAnimating)
+    if (snapshot.isDropAnimating && snapshot.draggingOver === "add-new-card")
       return { ...style, transitionDuration: `0.001s` };
 
     if (snapshot.combineWith) {
