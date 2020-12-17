@@ -165,15 +165,19 @@ function App() {
         </Col>
       </div>
       <a
-        className="credits"
+        className="version"
         target="_blank"
         href="https://github.com/Christian0411/pair-gen"
       >
-        Website by Oscar Martinez & Christian Canizares
+        Version 1.1
         <GithubOutlined
           style={{ marginLeft: "10px", fontSize: "16px", color: "#08c" }}
         />
       </a>
+
+      <span className="credits">
+        Website by Oscar Martinez & Christian Canizares
+      </span>
 
       <ParticlesBg color="#56ca8d" num={40} type="cobweb" bg={true} />
     </>

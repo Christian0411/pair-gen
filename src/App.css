@@ -24,6 +24,13 @@
   bottom: 0;
   left: 10px;
 }
+
+.version {
+  position: fixed;
+  color: dimgray;
+  bottom: 0;
+  left: 94%;
+}
 .App-header {
   background-color: #303046;
   min-height: 100vh;
