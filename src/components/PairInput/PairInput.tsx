@@ -54,6 +54,7 @@ function PairInput({ names, onNewName, onEnter }: PairInputProps) {
         setNameInput(item);
       }
     } else if (e.which === Key.ENTER) {
+      e.target.blur();
       if (e.target.value.trim(" ") !== "") {
         addTag(e.target.value);
         onEnter([...tags, e.target.value]);
