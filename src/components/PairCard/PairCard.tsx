@@ -67,6 +67,7 @@ function PairCard({
         <div className="card-title-input-container">
           {/* <EditOutlined /> */}
           <input
+            maxLength={7}
             className={`card-title-input`}
             onChange={(e) => setCardTitle(e.target.value)}
             onKeyDown={(e) => handleInput(e)}
