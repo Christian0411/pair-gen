@@ -16,6 +16,10 @@ interface PairCardProps {
   isDragging?: boolean;
 }
 
+const Key = {
+  ENTER: 13
+};
+
 function PairCard({
   pair,
   pairIndex,
@@ -47,9 +51,13 @@ function PairCard({
     return style;
   };
 
-  const titleInputOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCardTitle(e.target.value);
-  };
+  const handleInput = (e: any) => {
+    if (e.which === Key.ENTER) {
+      if (e.target.value.trim(" ") !== "") {
+        e.target.blur()
+      }
+    }
+  }
 
   return (
     <Card
@@ -60,7 +68,8 @@ function PairCard({
           {/* <EditOutlined /> */}
           <input
             className={`card-title-input`}
-            onChange={titleInputOnChange}
+            onChange={(e) => setCardTitle(e.target.value)}
+            onKeyDown={(e) => handleInput(e)}
             value={cardTitle}
           />
         </div>
