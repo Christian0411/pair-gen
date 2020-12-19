@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { Card, Input } from "antd";
 import "./PairCard.css";
 import {
@@ -17,7 +17,7 @@ interface PairCardProps {
 }
 
 const Key = {
-  ENTER: 13
+  ENTER: 13,
 };
 
 function PairCard({
@@ -27,6 +27,11 @@ function PairCard({
   isDragging,
 }: PairCardProps) {
   const [cardTitle, setCardTitle] = useState<string>(`Pair ${pairIndex}`);
+
+  const [isEditingCardTitle, setIsEditingCardTitle] = useState<boolean>(false);
+  const [inputHover, setInputHover] = useState<boolean>(false);
+
+  const titleInputRef = useRef<HTMLInputElement>(null);
 
   const getItemStyle = (
     draggableStyle: any,
@@ -54,25 +59,42 @@ function PairCard({
   const handleInput = (e: any) => {
     if (e.which === Key.ENTER) {
       if (e.target.value.trim(" ") !== "") {
-        e.target.blur()
+        e.target.blur();
       }
     }
-  }
+  };
 
   return (
     <Card
       key={pairIndex}
       className={`card ${pair.length || "add-new-pair"}  ${highlightClassName}`}
       title={
-        <div className="card-title-input-container">
-          {/* <EditOutlined /> */}
+        <div
+          onClick={() => {
+            titleInputRef.current?.select();
+          }}
+          onMouseEnter={() => setInputHover(true)}
+          onMouseLeave={() => setInputHover(false)}
+          className="card-title-input-container"
+        >
           <input
-            maxLength={7}
-            className={`card-title-input`}
+            ref={titleInputRef}
+            maxLength={16}
+            className={`card-title-input ${
+              isEditingCardTitle && "card-title-input-editable"
+            }`}
             onChange={(e) => setCardTitle(e.target.value)}
+            onClick={(e) => {
+              e.currentTarget.select();
+            }}
+            onBlur={() => {
+              setIsEditingCardTitle(false);
+            }}
+            onFocus={(e) => setIsEditingCardTitle(true)}
             onKeyDown={(e) => handleInput(e)}
             value={cardTitle}
           />
+          {(isEditingCardTitle || inputHover) && <EditOutlined />}
         </div>
       }
       size={"small"}
