@@ -82,15 +82,11 @@ function App() {
     if (titlesFromUrl) {
       const titlesFromUrlArray = titlesFromUrl
         .split(",")
-        .filter((item) => item !== "")
+        .map((item, index) => (item === "" ? `Pair ${index}` : item))
         .map((item) => decodeURIComponent(item).trim().substring(0, 18));
       setPairCardTitles(titlesFromUrlArray);
     }
   }, [generatePairs]);
-
-  useEffect(() => {
-    createRequestUri(names, pairCardTitles);
-  }, [pairCardTitles]);
 
   return (
     <>
@@ -141,7 +137,10 @@ function App() {
                   highlightClassName={hover ? "pair-card-hover" : ""}
                   pairs={pairs}
                   cardTitles={pairCardTitles}
-                  onTitleChange={(titles) => setPairCardTitles(titles)}
+                  onTitleChange={(titles) => {
+                    createRequestUri(names, titles);
+                    setPairCardTitles(titles);
+                  }}
                   onPairChange={(newPairs) => setPairs(newPairs)}
                   onDrag={(isDragging) => setDragging(isDragging)}
                 />

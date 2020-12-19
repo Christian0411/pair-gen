@@ -3,15 +3,15 @@ import React, { ChangeEvent, useRef, useState } from "react";
 import { Key } from "../../constants/Constants";
 
 interface EditableLabelProps {
-  initialLabelText: string;
+  labelText: string;
   onChange: (label: string) => void;
 }
 
-function EditableLabel({ initialLabelText, onChange }: EditableLabelProps) {
+function EditableLabel({ labelText, onChange }: EditableLabelProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [inputHover, setInputHover] = useState<boolean>(false);
-  const [label, setLabel] = useState<string>(initialLabelText);
+  const [label, setLabel] = useState<string>(labelText);
 
   const handleInput = (e: any) => {
     if (e.which === Key.ENTER) {

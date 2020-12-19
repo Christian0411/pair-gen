@@ -169,7 +169,7 @@ function DragDropCards({
           key={index}
           pair={pair}
           pairIndex={index}
-          cardTitle={cardTitles[index] ?? `pair ${index}`}
+          cardTitle={cardTitles[index] ?? `Pair ${index}`}
           onTitleChange={(newTitle) =>
             handlePairCardTitleChange(newTitle, index)
           }

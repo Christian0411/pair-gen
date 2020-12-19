@@ -58,9 +58,7 @@ function PairCard({
     <Card
       key={`${cardTitle}-${pairIndex}`}
       className={`card ${pair.length || "add-new-pair"}  ${highlightClassName}`}
-      title={
-        <EditableLabel onChange={onTitleChange} initialLabelText={cardTitle} />
-      }
+      title={<EditableLabel onChange={onTitleChange} labelText={cardTitle} />}
       size={"small"}
       bordered={false}
       data-visible={isDragging ? 0 : 1}
