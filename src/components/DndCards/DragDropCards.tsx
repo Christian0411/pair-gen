@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import PairCard from "../PairCard/PairCard";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import "./DndCards.css";
+import "./DragDropCards.css";
 import { PlusOutlined } from "@ant-design/icons";
 interface DndCardsProps {
   pairs: string[][];
+  cardTitles: string[];
+  onTitleChange: (cardTitles: string[]) => void;
   onPairChange: (newPairs: string[][]) => void;
   onDrag: (isDragging: boolean) => void;
   highlightClassName: string;
 }
 
-function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsProps) {
+function DragDropCards({
+  pairs,
+  onPairChange,
+  onDrag,
+  onTitleChange,
+  cardTitles,
+  highlightClassName,
+}: DndCardsProps) {
   const [dndPairs, setDndPairs] = useState<string[][]>(pairs);
 
   const [dragging, setDragging] = useState<boolean>(false);
@@ -104,7 +113,7 @@ function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsP
   };
 
   function onDragEnd(result: any) {
-    setDragging(false)
+    setDragging(false);
     const { source, destination } = result;
     if (!destination && !result.combine) {
       return;
@@ -143,14 +152,27 @@ function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsP
     }
   }
 
+  const handlePairCardTitleChange = (newTitle: string, index: number) => {
+    const newPairCardTitles = cardTitles.slice();
+    newPairCardTitles[index] = newTitle;
+    onTitleChange(newPairCardTitles);
+  };
+
   return (
-    <DragDropContext onDragStart={() => setDragging(true)} onDragEnd={onDragEnd}>
+    <DragDropContext
+      onDragStart={() => setDragging(true)}
+      onDragEnd={onDragEnd}
+    >
       {dndPairs.map((pair, index) => (
         <PairCard
           highlightClassName={highlightClassName}
           key={index}
           pair={pair}
           pairIndex={index}
+          cardTitle={cardTitles[index] ?? `pair ${index}`}
+          onTitleChange={(newTitle) =>
+            handlePairCardTitleChange(newTitle, index)
+          }
         />
       ))}
       <Droppable
@@ -181,4 +203,4 @@ function DndCards({ pairs, onPairChange, onDrag, highlightClassName }: DndCardsP
     </DragDropContext>
   );
 }
-export default DndCards;
+export default DragDropCards;

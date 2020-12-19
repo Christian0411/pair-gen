@@ -7,12 +7,14 @@ import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
 import { CopyOutlined, GithubOutlined } from "@ant-design/icons";
 import RollButton from "./components/RollButton/RollButton";
-import DndCards from "./components/DndCards/DndCards";
+import DragDropCards from "./components/DndCards/DragDropCards";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
 
   const [pairs, setPairs] = useState<string[][]>([[]]);
+
+  const [pairCardTitles, setPairCardTitles] = useState<string[]>([]);
 
   const [doRollAnimation, setDoRollAnimation] = useState<number>(0);
 
@@ -54,9 +56,13 @@ function App() {
     setPairs(tempPairs);
   }, []);
 
-  const createRequestUri = (names: string[]) => {
-    names.length > 0
-      ? window.history.replaceState(null, "", `?names=${names.join()}`)
+  const createRequestUri = (names: string[], titles: string[]) => {
+    names.length > 0 || titles.length > 0
+      ? window.history.replaceState(
+          null,
+          "",
+          `?names=${names.join()}&titles=${titles.join()}`
+        )
       : window.history.replaceState(null, "", "/");
   };
 
@@ -64,15 +70,27 @@ function App() {
     const windowUrl = window.location.search;
     const params = new URLSearchParams(windowUrl);
     const namesFromUrl = params.get("names");
+    const titlesFromUrl = params.get("titles");
     if (namesFromUrl) {
       const namesFromUrlArray = namesFromUrl
         .split(",")
         .filter((item) => item !== "")
-        .map((item) => decodeURIComponent(item).trim());
+        .map((item) => decodeURIComponent(item).trim().substring(0, 18));
       setNames(namesFromUrlArray);
       generatePairs(namesFromUrlArray);
     }
+    if (titlesFromUrl) {
+      const titlesFromUrlArray = titlesFromUrl
+        .split(",")
+        .filter((item) => item !== "")
+        .map((item) => decodeURIComponent(item).trim().substring(0, 18));
+      setPairCardTitles(titlesFromUrlArray);
+    }
   }, [generatePairs]);
+
+  useEffect(() => {
+    createRequestUri(names, pairCardTitles);
+  }, [pairCardTitles]);
 
   return (
     <>
@@ -94,7 +112,7 @@ function App() {
                 setNames(names);
               }}
               onEnter={(names) => {
-                createRequestUri(names);
+                createRequestUri(names, pairCardTitles);
                 generatePairs(names);
               }}
             />
@@ -102,7 +120,7 @@ function App() {
               <RollButton
                 doAnimation={doRollAnimation}
                 onClick={() => {
-                  createRequestUri(names);
+                  createRequestUri(names, pairCardTitles);
                   generatePairs(names);
                 }}
                 onRollAnimationEnd={() => {
@@ -119,9 +137,11 @@ function App() {
               }`}
             >
               {pairs.filter((pair) => pair.length).length > 0 && (
-                <DndCards
+                <DragDropCards
                   highlightClassName={hover ? "pair-card-hover" : ""}
                   pairs={pairs}
+                  cardTitles={pairCardTitles}
+                  onTitleChange={(titles) => setPairCardTitles(titles)}
                   onPairChange={(newPairs) => setPairs(newPairs)}
                   onDrag={(isDragging) => setDragging(isDragging)}
                 />

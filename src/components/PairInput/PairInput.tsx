@@ -1,6 +1,7 @@
 import { Tag } from "antd";
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
+import { Key } from "../../constants/Constants";
 import "./PairInput.css";
 
 interface PairInputProps {
@@ -9,14 +10,6 @@ interface PairInputProps {
   onNewName: (names: string[]) => void;
   onEnter: (names: string[]) => void;
 }
-
-const Key = {
-  SPACE: 32,
-  BACKSPACE: 8,
-  LEFT_ARROW: 37,
-  ENTER: 13,
-  TAB: 9,
-};
 
 function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
   const [tags, setTags] = useState<string[]>([]);
@@ -60,8 +53,8 @@ function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
       }
     } else if (e.which === Key.ENTER) {
       if (e.target.value.trim(" ") !== "") {
-        addTag(e.target.value);
-        onEnter([...tags, e.target.value]);
+        addTag(e.target.value.substring(0, 18));
+        onEnter([...tags, e.target.value.substring(0, 18)]);
       } else {
         onEnter(tags);
       }
@@ -83,7 +76,8 @@ function PairInput({ names, dragging, onNewName, onEnter }: PairInputProps) {
     const pastedTagsNewline = pasted
       .replace(/\r/g, "")
       .split(/\n/)
-      .filter((item) => item !== "");
+      .filter((item) => item !== "")
+      .map((item) => item.substring(0, 18));
 
     if (pastedTagsNewline.length === 1) {
       pastedTags = pasted.split(" ").filter((item) => item !== "");

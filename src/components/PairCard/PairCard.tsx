@@ -8,12 +8,15 @@ import {
 } from "react-beautiful-dnd";
 import swap from "../../imgs/swap.png";
 import { EditOutlined } from "@ant-design/icons";
+import EditableLabel from "../EditableLabel/EditableLabel";
 
 interface PairCardProps {
   pair: string[];
   pairIndex: number;
+  cardTitle: string;
   highlightClassName: string;
   isDragging?: boolean;
+  onTitleChange: (title: string) => void;
 }
 
 const Key = {
@@ -22,17 +25,12 @@ const Key = {
 
 function PairCard({
   pair,
+  cardTitle,
   pairIndex,
   highlightClassName,
   isDragging,
+  onTitleChange,
 }: PairCardProps) {
-  const [cardTitle, setCardTitle] = useState<string>(`Pair ${pairIndex}`);
-
-  const [isEditingCardTitle, setIsEditingCardTitle] = useState<boolean>(false);
-  const [inputHover, setInputHover] = useState<boolean>(false);
-
-  const titleInputRef = useRef<HTMLInputElement>(null);
-
   const getItemStyle = (
     draggableStyle: any,
     snapshot: DraggableStateSnapshot
@@ -56,46 +54,12 @@ function PairCard({
     return style;
   };
 
-  const handleInput = (e: any) => {
-    if (e.which === Key.ENTER) {
-      if (e.target.value.trim(" ") !== "") {
-        e.target.blur();
-      }
-    }
-  };
-
   return (
     <Card
-      key={pairIndex}
+      key={`${cardTitle}-${pairIndex}`}
       className={`card ${pair.length || "add-new-pair"}  ${highlightClassName}`}
       title={
-        <div
-          onClick={() => {
-            titleInputRef.current?.select();
-          }}
-          onMouseEnter={() => setInputHover(true)}
-          onMouseLeave={() => setInputHover(false)}
-          className="card-title-input-container"
-        >
-          <input
-            ref={titleInputRef}
-            maxLength={16}
-            className={`card-title-input ${
-              isEditingCardTitle && "card-title-input-editable"
-            }`}
-            onChange={(e) => setCardTitle(e.target.value)}
-            onClick={(e) => {
-              e.currentTarget.select();
-            }}
-            onBlur={() => {
-              setIsEditingCardTitle(false);
-            }}
-            onFocus={(e) => setIsEditingCardTitle(true)}
-            onKeyDown={(e) => handleInput(e)}
-            value={cardTitle}
-          />
-          {(isEditingCardTitle || inputHover) && <EditOutlined />}
-        </div>
+        <EditableLabel onChange={onTitleChange} initialLabelText={cardTitle} />
       }
       size={"small"}
       bordered={false}
