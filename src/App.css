@@ -75,7 +75,7 @@
 .copy-container {
   display: grid;
   align-self: center;
-  grid-template-columns: 193px 250px 25px;
+  grid-template-columns: 193px 240px 35px;
   column-gap: 10px;
   row-gap: 10px;
 }

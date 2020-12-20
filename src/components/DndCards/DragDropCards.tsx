@@ -183,6 +183,7 @@ function DragDropCards({
       >
         {(provided, snapshot) => (
           <div
+            id="add-new-card-container"
             className={`add-new-card-container ${
               snapshot.isDraggingOver ? "add-new-card-container-hover" : ""
             }`}
