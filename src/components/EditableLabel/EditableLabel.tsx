@@ -1,5 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Key } from "../../constants/Constants";
 
 interface EditableLabelProps {

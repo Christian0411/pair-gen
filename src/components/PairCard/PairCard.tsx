@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useRef, useState } from "react";
-import { Card, Input } from "antd";
+import React from "react";
+import { Card } from "antd";
 import "./PairCard.css";
 import {
   Draggable,
@@ -7,7 +7,6 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import swap from "../../imgs/swap.png";
-import { EditOutlined } from "@ant-design/icons";
 import EditableLabel from "../EditableLabel/EditableLabel";
 
 interface PairCardProps {
@@ -18,10 +17,6 @@ interface PairCardProps {
   isDragging?: boolean;
   onTitleChange: (title: string) => void;
 }
-
-const Key = {
-  ENTER: 13,
-};
 
 function PairCard({
   pair,
@@ -71,6 +66,7 @@ function PairCard({
       >
         {(provided, snapshot) => (
           <div
+            tabIndex={-1}
             className={"tag-container"}
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -87,6 +83,7 @@ function PairCard({
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    tabIndex={-1}
                     style={getItemStyle(
                       provided.draggableProps.style,
                       snapshot
