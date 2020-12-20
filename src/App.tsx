@@ -5,7 +5,12 @@ import PairInput from "./components/PairInput/PairInput";
 import { Button } from "antd";
 import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
-import { CopyOutlined, GithubOutlined } from "@ant-design/icons";
+import html2canvas from "html2canvas";
+import {
+  CameraOutlined,
+  CopyOutlined,
+  GithubOutlined,
+} from "@ant-design/icons";
 import RollButton from "./components/RollButton/RollButton";
 import DragDropCards from "./components/DndCards/DragDropCards";
 
@@ -88,6 +93,34 @@ function App() {
     }
   }, [generatePairs]);
 
+  const handleScreenshot = () => {
+    const input = document.getElementById("capture");
+    console.log(input);
+    if (input) {
+      html2canvas(input, {
+        scale: 2,
+        backgroundColor: "#181823",
+        ignoreElements: (el) => {
+          return el.className === "add-new-card-container ";
+        },
+      }).then((canvas: any) => {
+        // Wait for animations
+        setTimeout(() => {
+          canvas.toBlob(function (blob: any) {
+            navigator.clipboard.write([
+              new ClipboardItem(
+                Object.defineProperty({}, blob.type, {
+                  value: blob,
+                  enumerable: true,
+                })
+              ),
+            ]);
+          });
+        }, 500);
+      });
+    }
+  };
+
   return (
     <>
       <div className="App">
@@ -128,6 +161,7 @@ function App() {
 
           <Row align="middle" justify="center" gutter={[16, 1]}>
             <div
+              id="capture"
               className={`pair-card-container ${
                 hover ? "pair-card-container-hover" : ""
               }`}
@@ -180,6 +214,22 @@ function App() {
                     style={{ background: "transparent", border: 0 }}
                   >
                     <CopyOutlined className="copy-icon" />
+                  </Button>
+
+                  <Button
+                    className="copy-button"
+                    onMouseEnter={() => {
+                      // setHover(true);
+                    }}
+                    onMouseLeave={() => {
+                      // setHover(false);
+                    }}
+                    onClick={() => {
+                      handleScreenshot();
+                    }}
+                    style={{ background: "transparent", border: 0 }}
+                  >
+                    <CameraOutlined className="copy-icon" />
                   </Button>
                 </Tooltip>
               )}

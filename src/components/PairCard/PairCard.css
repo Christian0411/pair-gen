@@ -55,10 +55,6 @@
   height: 90%;
 }
 
-.card[data-visible="1"] {
-  animation: data-visible 0.5s 1;
-}
-
 @keyframes data-visible {
   100% {
     opacity: 1;
