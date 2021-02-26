@@ -5,9 +5,15 @@ import PairInput from "./components/PairInput/PairInput";
 import { Button } from "antd";
 import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
-import { CopyOutlined, GithubOutlined } from "@ant-design/icons";
+import domtoimage from "dom-to-image";
+import {
+  CameraOutlined,
+  CopyOutlined,
+  GithubOutlined,
+} from "@ant-design/icons";
 import RollButton from "./components/RollButton/RollButton";
 import DragDropCards from "./components/DndCards/DragDropCards";
+import dataURItoBlob from "./util/util";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
@@ -21,6 +27,8 @@ function App() {
   const [hover, setHover] = useState<boolean>();
 
   const [tooltipVisible, setTooltipVisible] = useState<boolean>();
+
+  const [screenshotToolTip, setScreenshotToolTip] = useState<boolean>();
 
   const [dragging, setDragging] = useState<boolean>(false);
 
@@ -88,16 +96,45 @@ function App() {
     }
   }, [generatePairs]);
 
+  const handleScreenshot = () => {
+    const input = document.getElementById("capture");
+    if (input) {
+      setScreenshotToolTip(true);
+      domtoimage
+        .toPng(input, { bgcolor: "#181823" })
+        .then(function (dataUrl: string) {
+          const blob = dataURItoBlob(dataUrl);
+          navigator.clipboard.write([
+            new ClipboardItem(
+              Object.defineProperty({}, blob.type, {
+                value: blob,
+                enumerable: true,
+              })
+            ),
+          ]);
+        });
+    }
+  };
+  useEffect(() => {
+    if (screenshotToolTip) setTimeout(() => setScreenshotToolTip(false), 1000);
+  }, [screenshotToolTip]);
   return (
     <>
       <div className="App">
         <Col>
-          <Row align="middle" justify="center" gutter={[8, 36]}>
+          <Row
+            id="logo-container"
+            align="middle"
+            justify="center"
+            gutter={[8, 36]}
+          >
             <Col>
-              <img height="100" width="100" alt={"logo"} src={logo} />
+              <img id="logo" height="100" width="100" alt={"logo"} src={logo} />
             </Col>
             <Col>
-              <span className="title-text">Pair Gen</span>
+              <span id="logo-text" className="title-text">
+                Pair Gen
+              </span>
             </Col>
           </Row>
           <Row align="middle" justify="center" gutter={[8, 8]}>
@@ -128,6 +165,7 @@ function App() {
 
           <Row align="middle" justify="center" gutter={[16, 1]}>
             <div
+              id="capture"
               className={`pair-card-container ${
                 hover ? "pair-card-container-hover" : ""
               }`}
@@ -150,38 +188,68 @@ function App() {
           <Row align="middle" justify="center">
             <div className={"copy-container"}>
               {pairs.filter((pair) => pair.length).length > 0 && (
-                <Tooltip
-                  placement="right"
-                  color={"white"}
-                  overlayClassName={"copied-tooltip"}
-                  trigger={"click"}
-                  visible={tooltipVisible}
-                  title={
-                    <span style={{ color: "black", fontWeight: "bold" }}>
-                      Copied!
-                    </span>
-                  }
-                >
-                  <Button
-                    className="copy-button"
-                    onMouseEnter={() => {
-                      setHover(true);
-                    }}
-                    onMouseLeave={() => {
-                      setHover(false);
-                    }}
-                    onClick={() => {
-                      setTooltipVisible(true);
-                      setTimeout(() => {
-                        setTooltipVisible(false);
-                      }, 1000);
-                      navigator.clipboard.writeText(createCopyString(pairs));
-                    }}
-                    style={{ background: "transparent", border: 0 }}
+                <>
+                  <Tooltip
+                    placement="right"
+                    color={"white"}
+                    overlayClassName={"copied-tooltip"}
+                    trigger={"click"}
+                    visible={tooltipVisible}
+                    title={
+                      <span style={{ color: "black", fontWeight: "bold" }}>
+                        Copied!
+                      </span>
+                    }
                   >
-                    <CopyOutlined className="copy-icon" />
-                  </Button>
-                </Tooltip>
+                    <Button
+                      className="copy-button"
+                      onMouseEnter={() => {
+                        setHover(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHover(false);
+                      }}
+                      onClick={() => {
+                        setTooltipVisible(true);
+                        setTimeout(() => {
+                          setTooltipVisible(false);
+                        }, 1000);
+                        navigator.clipboard.writeText(createCopyString(pairs));
+                      }}
+                      style={{ background: "transparent", border: 0 }}
+                    >
+                      <CopyOutlined className="copy-icon" />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                    placement="right"
+                    color={"white"}
+                    overlayClassName={"copied-tooltip"}
+                    trigger={"click"}
+                    visible={screenshotToolTip}
+                    title={
+                      <span style={{ color: "black", fontWeight: "bold" }}>
+                        Copied Screenshot!
+                      </span>
+                    }
+                  >
+                    <Button
+                      className="copy-button"
+                      onMouseEnter={() => {
+                        setHover(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHover(false);
+                      }}
+                      onClick={() => {
+                        handleScreenshot();
+                      }}
+                      style={{ background: "transparent", border: 0 }}
+                    >
+                      <CameraOutlined className="copy-icon" />
+                    </Button>
+                  </Tooltip>
+                </>
               )}
             </div>
           </Row>
@@ -193,7 +261,7 @@ function App() {
         target="_blank"
         href="https://github.com/Christian0411/pair-gen"
       >
-        Version 1.2
+        Version 1.3
         <GithubOutlined
           style={{ marginLeft: "10px", fontSize: "16px", color: "#08c" }}
         />
