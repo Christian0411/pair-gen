@@ -5,7 +5,7 @@ import PairInput from "./components/PairInput/PairInput";
 import { Button } from "antd";
 import ParticlesBg from "particles-bg";
 import logo from "./imgs/logo.png";
-import html2canvas from "html2canvas";
+import domtoimage from "dom-to-image";
 import {
   CameraOutlined,
   CopyOutlined,
@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import RollButton from "./components/RollButton/RollButton";
 import DragDropCards from "./components/DndCards/DragDropCards";
+import dataURItoBlob from "./util/util";
 
 function App() {
   const [names, setNames] = useState<string[]>([]);
@@ -97,31 +98,21 @@ function App() {
 
   const handleScreenshot = () => {
     const input = document.getElementById("capture");
-    const logo = document.getElementById("logo-container");
-
     if (input) {
-      html2canvas(input, {
-        backgroundColor: "#181823",
-        onclone: (doc) => {
-          doc.getElementById("add-new-card-container")?.remove();
-          logo && doc.getElementById("capture")?.appendChild(logo);
-        },
-      }).then((canvas: any) => {
-        // Wait for animations
-        setTimeout(() => {
-          canvas.toBlob(function (blob: any) {
-            navigator.clipboard.write([
-              new ClipboardItem(
-                Object.defineProperty({}, blob.type, {
-                  value: blob,
-                  enumerable: true,
-                })
-              ),
-            ]);
-            setScreenshotToolTip(true);
-          });
-        }, 500);
-      });
+      setScreenshotToolTip(true);
+      domtoimage
+        .toPng(input, { bgcolor: "#181823" })
+        .then(function (dataUrl: string) {
+          const blob = dataURItoBlob(dataUrl);
+          navigator.clipboard.write([
+            new ClipboardItem(
+              Object.defineProperty({}, blob.type, {
+                value: blob,
+                enumerable: true,
+              })
+            ),
+          ]);
+        });
     }
   };
   useEffect(() => {
