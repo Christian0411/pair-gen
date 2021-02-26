@@ -261,7 +261,7 @@ function App() {
         target="_blank"
         href="https://github.com/Christian0411/pair-gen"
       >
-        Version 1.2
+        Version 1.3
         <GithubOutlined
           style={{ marginLeft: "10px", fontSize: "16px", color: "#08c" }}
         />
